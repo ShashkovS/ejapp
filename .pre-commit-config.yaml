@@ -1,0 +1,32 @@
+# .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      # Ruff Formatter for ALL Python files
+      - id: ruff-format
+        name: ruff-format
+        entry: ruff format
+        language: system
+        types: [python]
+
+      # Ruff Linter for ALL Python files
+      - id: ruff
+        name: ruff-check
+        entry: ruff check --fix --exit-non-zero-on-fix
+        language: system
+        types: [python]
+
+      # It's also good practice to format the pyproject.toml
+      - id: ruff-format-toml
+        name: ruff-format-toml
+        entry: ruff format
+        language: system
+        files: 'backend/pyproject.toml'
+
+      # Prettier for frontend files
+      - id: prettier
+        name: prettier
+        entry: npx prettier --write
+        language: system
+        files: ^frontend/.*\.(js|ts|css|html|json|md)$
+        require_serial: true

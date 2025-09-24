@@ -1,0 +1,33 @@
+<!-- frontend/index.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ejapp Public</title>
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <div class="max-w-md p-6 mx-auto">
+      <h1 class="text-2xl font-bold mb-4">Welcome to ejapp</h1>
+      <!-- Registration form -->
+      <form id="register-form" class="mb-4 border p-4 rounded bg-white">
+        <h2 class="text-xl font-semibold mb-2">Register</h2>
+        <input id="reg-email" type="email" placeholder="Email" required class="border p-1 w-full mb-2" />
+        <input id="reg-pass" type="password" placeholder="Password" required class="border p-1 w-full mb-2" />
+        <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Register</button>
+      </form>
+      <!-- Login form -->
+      <form id="login-form" class="mb-4 border p-4 rounded bg-white">
+        <h2 class="text-xl font-semibold mb-2">Login</h2>
+        <input id="login-email" type="email" placeholder="Email" required class="border p-1 w-full mb-2" />
+        <input id="login-pass" type="password" placeholder="Password" required class="border p-1 w-full mb-2" />
+        <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded">Login</button>
+      </form>
+      <!-- Google login -->
+      <button id="google-btn" class="bg-gray-700 text-white px-3 py-1 rounded">Sign in with Google</button>
+    </div>
+
+    <!-- Include main TS script -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

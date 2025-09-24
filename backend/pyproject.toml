@@ -1,0 +1,80 @@
+[project]
+name = "ejapp"
+version = "0.1.0"
+description = "Awesome ejudge"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy",
+    "aiosqlite",
+    "python-dotenv",
+    "passlib[bcrypt]",
+    "PyJWT",
+    "alembic",
+    "pytest",
+    "httpx",
+    "greenlet",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pre-commit",
+    "pyperclip",
+]
+
+
+[tool.ruff]
+line-length = 160
+indent-width = 4
+target-version = "py313"
+
+# Enable standard rule sets
+lint.select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "C90", # mccabe complexity
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "A",   # flake8-builtins
+    "DTZ", # flake8-datetimez
+    "PIE", # flake8-pie
+    "Q",   # flake8-quotes
+    "RUF", # Ruff-specific rules
+]
+
+# Ignore some noisy or conflicting rules
+lint.ignore = [
+    "E501",  # line length handled by formatter
+    "Q000",  # conflicting quote style (we set single quotes below)
+]
+
+# Paths to exclude
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".mypy_cache",
+    ".pytest_cache",
+    "__pycache__",
+    "build",
+    "dist",
+    "migrations",
+    ".venv",
+    "venv",
+]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["ejapp", "backend"]

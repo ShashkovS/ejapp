@@ -1,0 +1,60 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="aiogram" />
+          <option value="aiohappyeyeballs" />
+          <option value="aiohttp" />
+          <option value="aiosignal" />
+          <option value="attrs" />
+          <option value="babel" />
+          <option value="cachetools" />
+          <option value="certifi" />
+          <option value="charset-normalizer" />
+          <option value="frozenlist" />
+          <option value="google-api-core" />
+          <option value="google-api-python-client" />
+          <option value="google-auth" />
+          <option value="google-auth-httplib2" />
+          <option value="google-auth-oauthlib" />
+          <option value="googleapis-common-protos" />
+          <option value="gspread" />
+          <option value="gunicorn" />
+          <option value="httplib2" />
+          <option value="idna" />
+          <option value="importlib_metadata" />
+          <option value="Levenshtein" />
+          <option value="magic-filter" />
+          <option value="multidict" />
+          <option value="nats-py" />
+          <option value="oauth2client" />
+          <option value="oauthlib" />
+          <option value="orjson" />
+          <option value="packaging" />
+          <option value="propcache" />
+          <option value="proto-plus" />
+          <option value="protobuf" />
+          <option value="pyasn1" />
+          <option value="pyasn1_modules" />
+          <option value="pyparsing" />
+          <option value="RapidFuzz" />
+          <option value="requests" />
+          <option value="requests-oauthlib" />
+          <option value="rsa" />
+          <option value="setuptools" />
+          <option value="six" />
+          <option value="sqlparse" />
+          <option value="tabulate" />
+          <option value="uritemplate" />
+          <option value="urllib3" />
+          <option value="wheel" />
+          <option value="yarl" />
+          <option value="yoyo-migrations" />
+          <option value="zipp" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

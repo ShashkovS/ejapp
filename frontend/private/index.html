@@ -1,0 +1,25 @@
+<!-- frontend/private/index.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Private Page</title>
+    <link href="/src/style.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <div class="max-w-md p-6 mx-auto">
+      <h1 class="text-2xl font-bold mb-4">Your Items</h1>
+      <ul id="item-list" class="mb-4 bg-white p-4 rounded border">
+        <!-- Items will be listed here -->
+      </ul>
+      <form id="item-form" class="flex">
+        <input id="item-title" type="text" placeholder="New item" required class="border p-1 flex-grow" />
+        <button type="submit" class="bg-blue-500 text-white px-3 py-1 ml-2 rounded">Add</button>
+      </form>
+      <p><a id="logout-link" href="/">Logout</a></p>
+    </div>
+
+    <script type="module" src="/private/main.ts"></script>
+  </body>
+</html>

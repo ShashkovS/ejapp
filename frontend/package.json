@@ -1,0 +1,33 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Web APP",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "preview:e2e": "vite preview --port 63343 --strictPort",
+    "test": "vitest run",
+    "test:watch": "vitest run",
+    "e2e": "VITE_API_BASE=http://localhost:18100 npm run build && playwright test",
+    "e2e:headed": "VITE_API_BASE=http://localhost:18100 npm run build && playwright test --headed",
+    "e2e:ui": "VITE_API_BASE=http://localhost:18100 npm run build && playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/node": "^24.5.2",
+    "autoprefixer": "^10.4.21",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^4.1.13",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.7",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "@tailwindcss/postcss": "^4.1.13"
+  }
+}
