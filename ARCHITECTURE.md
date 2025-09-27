@@ -35,6 +35,11 @@ Both services are run independently during development. The frontend communicate
 
 All handlers use async sessions to interact with the database. Responses are simple dictionaries (Pydantic models are defined for request/response validation).
 
+### Ejudge integration primitives
+- **Typed schema hub:** `backend/ejudge/models.py` centralises the Pydantic models describing the `submit-run`, `submit-run-input`, `get-submit`, and `get-user` endpoints, plus the supporting notification structures.
+- **Usage guidance:** the models enforce mutually exclusive fields (problem selector, language selector, payload inputs) via validators so client code cannot accidentally craft invalid multipart requests.
+- **Autonomy-friendly docs:** the module includes detailed field annotations and docstrings explaining how each value maps to the upstream wiki and Swagger specification, enabling AI agents to extend the integration safely without re-reading the raw JSON spec.
+
 ## Frontend
 ### Structure
 - **Entry HTML:** `frontend/index.html` loads the public landing page; Vite injects bundles from `frontend/src/main.ts`.
