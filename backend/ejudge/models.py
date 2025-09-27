@@ -10,11 +10,10 @@ extend the integration without re-reading the spec from scratch.
 
 from __future__ import annotations
 
-from typing import Annotated, Literal, TypeVar
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, IPvAnyAddress, model_validator
-from pydantic.generics import GenericModel
 
 # -- Shared scalar aliases --------------------------------------------------
 # Using ``Annotated`` adds validation metadata directly on the types and keeps
@@ -71,20 +70,20 @@ class SubmitRunRequest(EjudgeBaseModel):
     sender_user_id: Annotated[UserId | None, Field(description='Alternative numeric identifier for impersonated submissions.')] = None
     sender_ip: Annotated[IPvAnyAddress | None, Field(description='Original client IP address, if the submitter is proxied.')] = None
     sender_ssl_flag: Annotated[bool | None, Field(description='Set to ``True`` when the user submitted via HTTPS.')] = None
-    problem_uuid: Annotated[UUID | None, Field(description='UUID of the problem to target. Mutually exclusive with ``problem_name`` and ``problem``.')]
-    problem_name: Annotated[str | None, Field(description='Problem short or internal name. Mutually exclusive with ``problem_uuid`` and ``problem``.')]
-    problem: Annotated[ProblemId | None, Field(description='Numeric problem identifier. Mutually exclusive with the other problem selectors.')]
-    variant: Annotated[int | None, Field(description='Optional variant identifier for variant-aware problem sets.')]
-    language_name: Annotated[str | None, Field(description='Short name of the language preset. Mutually exclusive with ``lang_id``.')]
-    lang_id: Annotated[int | str | None, Field(description='Language identifier (numeric or short name). Mutually exclusive with ``language_name``.')]
-    eoln_type: Annotated[int | None, Field(ge=0, description='Line-ending conversion strategy recognised by ejudge.')]
-    is_visible: Annotated[bool | None, Field(description='Set to ``True`` to force the submission to be visible in the UI.')]
-    file: Annotated[bytes | None, Field(description='Source code payload as raw bytes. Mutually exclusive with ``text_form``.')]
-    text_form: Annotated[str | None, Field(description='Source code payload as UTF-8 text. Mutually exclusive with ``file``.')]
+    problem_uuid: Annotated[UUID | None, Field(description='UUID of the problem to target. Mutually exclusive with ``problem_name`` and ``problem``.')] = None
+    problem_name: Annotated[str | None, Field(description='Problem short or internal name. Mutually exclusive with ``problem_uuid`` and ``problem``.')] = None
+    problem: Annotated[ProblemId | None, Field(description='Numeric problem identifier. Mutually exclusive with the other problem selectors.')] = None
+    variant: Annotated[int | None, Field(description='Optional variant identifier for variant-aware problem sets.')] = None
+    language_name: Annotated[str | None, Field(description='Short name of the language preset. Mutually exclusive with ``lang_id``.')] = None
+    lang_id: Annotated[int | str | None, Field(description='Language identifier (numeric or short name). Mutually exclusive with ``language_name``.')] = None
+    eoln_type: Annotated[int | None, Field(ge=0, description='Line-ending conversion strategy recognised by ejudge.')] = None
+    is_visible: Annotated[bool | None, Field(description='Set to ``True`` to force the submission to be visible in the UI.')] = None
+    file: Annotated[bytes | None, Field(description='Source code payload as raw bytes. Mutually exclusive with ``text_form``.')] = None
+    text_form: Annotated[str | None, Field(description='Source code payload as UTF-8 text. Mutually exclusive with ``file``.')] = None
     not_ok_is_cf: Annotated[bool | None, Field(description='Treat any non-OK verdict as ``Check Failed`` when set.')] = None
     rejudge_flag: Annotated[bool | None, Field(description='Submit with the low-priority rejudge queue when ``True``.')] = None
-    ext_user_kind: Annotated[str | None, Field(description='External system identifier type, if ejudge should persist it.')]
-    ext_user: Annotated[str | None, Field(description='Concrete external system identifier for the submitter.')]
+    ext_user_kind: Annotated[str | None, Field(description='External system identifier type, if ejudge should persist it.')] = None
+    ext_user: Annotated[str | None, Field(description='Concrete external system identifier for the submitter.')] = None
     notify_driver: Annotated[int | None, Field(description='Notification driver identifier (see :class:`NotificationTarget`).')] = None
     notify_kind: Annotated[NotificationKind | None, Field(description='Notification queue encoding kind.')] = None
     notify_queue: Annotated[str | None, Field(description='Notification queue identifier payload.')] = None
@@ -129,13 +128,13 @@ class SubmitRunInputRequest(EjudgeBaseModel):
     sender_ssl_flag: Annotated[bool | None, Field(description='Set to ``True`` when the user submitted via HTTPS.')] = None
     prob_id: Annotated[str | int, Field(description='Problem identifier (short name, internal name, or numeric id).')]
     lang_id: Annotated[str | int, Field(description='Language identifier (short name or numeric id).')]
-    eoln_type: Annotated[int | None, Field(ge=0, description='Line-ending conversion strategy recognised by ejudge.')]
-    file: Annotated[bytes | None, Field(description='Source code payload as raw bytes. Mutually exclusive with ``text_form``.')]
-    text_form: Annotated[str | None, Field(description='Source code payload as UTF-8 text. Mutually exclusive with ``file``.')]
-    file_input: Annotated[bytes | None, Field(description='Custom stdin payload as raw bytes. Mutually exclusive with ``text_form_input``.')]
-    text_form_input: Annotated[str | None, Field(description='Custom stdin payload as text. Mutually exclusive with ``file_input``.')]
-    ext_user_kind: Annotated[str | None, Field(description='External system identifier type, if ejudge should persist it.')]
-    ext_user: Annotated[str | None, Field(description='Concrete external system identifier for the submitter.')]
+    eoln_type: Annotated[int | None, Field(ge=0, description='Line-ending conversion strategy recognised by ejudge.')] = None
+    file: Annotated[bytes | None, Field(description='Source code payload as raw bytes. Mutually exclusive with ``text_form``.')] = None
+    text_form: Annotated[str | None, Field(description='Source code payload as UTF-8 text. Mutually exclusive with ``file``.')] = None
+    file_input: Annotated[bytes | None, Field(description='Custom stdin payload as raw bytes. Mutually exclusive with ``text_form_input``.')] = None
+    text_form_input: Annotated[str | None, Field(description='Custom stdin payload as text. Mutually exclusive with ``file_input``.')] = None
+    ext_user_kind: Annotated[str | None, Field(description='External system identifier type, if ejudge should persist it.')] = None
+    ext_user: Annotated[str | None, Field(description='Concrete external system identifier for the submitter.')] = None
     notify_driver: Annotated[int | None, Field(description='Notification driver identifier (see :class:`NotificationTarget`).')] = None
     notify_kind: Annotated[NotificationKind | None, Field(description='Notification queue encoding kind.')] = None
     notify_queue: Annotated[str | None, Field(description='Notification queue identifier payload.')] = None
@@ -172,6 +171,7 @@ class GetUserRequest(EjudgeBaseModel):
     """Query parameters for the privileged ``get-user`` endpoint."""
 
     contest_id: ContestId
+    action: Literal['get-user'] = Field(default='get-user', frozen=True)
     other_user_id: Annotated[UserId | None, Field(description='Numeric user identifier to fetch. Mutually exclusive with ``other_user_login``.')] = None
     other_user_login: Annotated[str | None, Field(description='Login of the user to fetch. Mutually exclusive with ``other_user_id``.')] = None
     global_: Annotated[bool | None, Field(alias='global', description='Set to true to request global (non contest specific) data.')] = None
@@ -196,20 +196,15 @@ class EjudgeError(EjudgeBaseModel):
     message: Annotated[str | None, Field(description='Optional verbose description returned by ejudge.')] = None
 
 
-ResultT = TypeVar('ResultT')
-
-
-class EjudgeReply(GenericModel[ResultT]):
+class EjudgeReply(EjudgeBaseModel):
     """Generic wrapper for ejudge reply envelopes."""
-
-    model_config = ConfigDict(extra='forbid', populate_by_name=True, str_strip_whitespace=True)
 
     ok: bool
     action: str
     server_time: Annotated[int | None, Field(description='Unix timestamp reported by ejudge.')] = None
     reply_id: Annotated[int | None, Field(description='Opaque response identifier used by ejudge.')] = None
     request_id: Annotated[int | None, Field(description='Identifier correlating the reply with the originating request.')] = None
-    result: Annotated[ResultT | None, Field(description='Successful payload returned by ejudge.')] = None
+    result: Annotated[Any | None, Field(description='Successful payload returned by ejudge.')] = None
     error: Annotated[EjudgeError | None, Field(description='Error details when ``ok`` is false.')] = None
 
 
@@ -220,8 +215,10 @@ class SubmitRunResult(EjudgeBaseModel):
     run_uuid: Annotated[UUID | None, Field(description='Optional UUID for the created run (depends on ejudge version).')] = None
 
 
-class SubmitRunReply(EjudgeReply[SubmitRunResult]):
+class SubmitRunReply(EjudgeReply):
     """Reply envelope for ``submit-run``."""
+
+    result: Annotated[SubmitRunResult | None, Field(description='Successful payload returned by ejudge.')] = None
 
 
 class SubmitRunInputResult(EjudgeBaseModel):
@@ -230,8 +227,10 @@ class SubmitRunInputResult(EjudgeBaseModel):
     submit_id: SubmitId
 
 
-class SubmitRunInputReply(EjudgeReply[SubmitRunInputResult]):
+class SubmitRunInputReply(EjudgeReply):
     """Reply envelope for ``submit-run-input``."""
+
+    result: Annotated[SubmitRunInputResult | None, Field(description='Successful payload returned by ejudge.')] = None
 
 
 class SubmitDetails(EjudgeBaseModel):
@@ -252,8 +251,8 @@ class SubmitDetails(EjudgeBaseModel):
     test_checker_output: Annotated[str | None, Field(description='Checker diagnostic output, if any.')] = None
     time: Milliseconds | None = Field(default=None, description='CPU time spent processing the submission.')
     real_time: Milliseconds | None = Field(default=None, description='Wall clock time spent processing the submission.')
-    exit_code: Annotated[int | None, Field(description='Process exit code reported by ejudge.')]
-    term_signal: Annotated[int | None, Field(description='Termination signal (POSIX) if the process was killed.')]
+    exit_code: Annotated[int | None, Field(description='Process exit code reported by ejudge.')] = None
+    term_signal: Annotated[int | None, Field(description='Termination signal (POSIX) if the process was killed.')] = None
     max_memory_used: BytesCount | None = Field(default=None, description='Maximum virtual memory usage reported by ejudge.')
     max_rss: BytesCount | None = Field(default=None, description='Maximum resident memory usage reported by ejudge.')
     input: Annotated[str | None, Field(description='Captured stdin used for the submission (submit-run-input only).')] = None
@@ -261,8 +260,10 @@ class SubmitDetails(EjudgeBaseModel):
     error: Annotated[str | None, Field(description='Captured stderr produced by the submission.')] = None
 
 
-class GetSubmitReply(EjudgeReply[SubmitDetails]):
+class GetSubmitReply(EjudgeReply):
     """Reply envelope for ``get-submit``."""
+
+    result: Annotated[SubmitDetails | None, Field(description='Successful payload returned by ejudge.')] = None
 
 
 class UserContestState(EjudgeBaseModel):
@@ -342,8 +343,10 @@ class UserProfile(EjudgeBaseModel):
     infos: Annotated[list[UserInfo] | None, Field(description='Contest-specific profile fields.')] = None
 
 
-class GetUserReply(EjudgeReply[UserProfile]):
+class GetUserReply(EjudgeReply):
     """Reply envelope for ``get-user``."""
+
+    result: Annotated[UserProfile | None, Field(description='Successful payload returned by ejudge.')] = None
 
 
 # Friendly aliases exported at package level.
