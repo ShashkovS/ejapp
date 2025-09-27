@@ -51,8 +51,8 @@ $(VENV_DIR)/bin/activate: $(BACKEND_DIR)/pyproject.toml
 setup-frontend: ## 📦 Install Node.js dependencies
 	@echo "--- Setting up Node.js frontend ---"
 	(cd $(FRONTEND_DIR) && npm install)
-	npx playwright install-deps
-    npx playwright install chromium chromium-headless-shell
+	(cd $(FRONTEND_DIR) && npx playwright install-deps)
+	(cd $(FRONTEND_DIR) && npx playwright install chromium chromium-headless-shell)
 
 .PHONY: install-hooks
 install-hooks: $(VENV_DIR)/bin/pre-commit ## 🔧 Install git pre-commit hooks
