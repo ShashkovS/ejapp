@@ -71,3 +71,15 @@ def test_refresh_token_issues_new_access_and_allows_call(client):
     new_tokens = r.json()
     r2 = client.get('/items', headers=_bearer(new_tokens['access_token']))
     assert r2.status_code == 200 and r2.json() == []
+
+
+def test_private_middleware_blocks_unauthenticated_and_allows_valid_token(client):
+    r = client.get('/private/ping')
+    assert r.status_code == 401
+
+    tokens = _register(client, 'erin@example.com', 'pw')
+    access = tokens['access_token']
+
+    r2 = client.get('/private/ping', headers=_bearer(access))
+    assert r2.status_code == 200
+    assert r2.json() == {'status': 'private-ok'}
