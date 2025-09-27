@@ -1,0 +1,4388 @@
+{
+    "schemes": [],
+    "swagger": "2.0",
+    "info": {
+        "description": "The ejudge API",
+        "title": "Ejudge API",
+        "contact": {},
+        "version": "3.13-pre"
+    },
+    "host": "",
+    "basePath": "/",
+    "paths": {
+        "/ej/api/v1/client/contest-status-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the contest status (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged contest"
+                ],
+                "summary": "Get the contest status (unprivileged)",
+                "operationId": "client-get-contest-status-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_ClientGetContestStatusJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/create-userprob": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "create VCS problem settings (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged vcs"
+                ],
+                "summary": "Create VCS problem settings (unprivileged)",
+                "operationId": "client-post-create-userprob",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Problem ID",
+                        "name": "prob_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Submit ID",
+                        "name": "json",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_EjudgeUserProb"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/download-run": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the source of the run (unprivileged)",
+                "tags": [
+                    "unprivileged run"
+                ],
+                "summary": "Get the source of the run (unprivileged)",
+                "operationId": "client-get-download-run",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "run_id",
+                        "name": "run_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "do not generate content-disposition header",
+                        "name": "no_disp",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ej/api/v1/client/download-run-file": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the input/output/correct of the run (unprivileged)",
+                "tags": [
+                    "unprivileged run"
+                ],
+                "summary": "Get the input/output/correct file of the run (unprivileged)",
+                "operationId": "client-get-download-run-file",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "run_id",
+                        "name": "run_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "test number",
+                        "name": "num",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "file index",
+                        "name": "index",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "initial offset of the file fragment",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "length of the file fragment",
+                        "name": "length",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ej/api/v1/client/get-submit": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "get information about a submit (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged submit"
+                ],
+                "summary": "Get information about a submit (unprivileged)",
+                "operationId": "client-get-submit",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Submit ID",
+                        "name": "submit_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Submit ID",
+                        "name": "json",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-ejudge_Submit"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/get-userprob": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "get VCS problem settings (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged vcs"
+                ],
+                "summary": "Get VCS problem settings (unprivileged)",
+                "operationId": "client-get-get-userprob",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Problem ID",
+                        "name": "prob_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Submit ID",
+                        "name": "json",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_EjudgeUserProb"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/list-runs-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the list of the runs (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged run"
+                ],
+                "summary": "Get the list of the runs (unprivileged)",
+                "operationId": "client-get-list-runs-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Problem ID",
+                        "name": "problem",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_ClientGetListRunsJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/problem-statement-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the problem statement (unprivileged)",
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "unprivileged problem"
+                ],
+                "summary": "Get the problem statement (unprivileged)",
+                "operationId": "client-get-problem-statement-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Problem ID",
+                        "name": "problem",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ej/api/v1/client/problem-status-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the problem status (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged problem"
+                ],
+                "summary": "Get the problem status (unprivileged)",
+                "operationId": "client-get-problem-status-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Problem ID",
+                        "name": "problem",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_ClientGetProblemStatusJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/remove-userprob": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "remove VCS problem settings (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged vcs"
+                ],
+                "summary": "Remove VCS problem settings (unprivileged)",
+                "operationId": "client-post-remove-userprob",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Serial ID of the properties",
+                        "name": "serial_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Submit ID",
+                        "name": "json",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.BaseReply"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/run-messages-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the messages associated with the run (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged run"
+                ],
+                "summary": "Get the messages associated with the run (unprivileged)",
+                "operationId": "client-get-run-messages-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Run ID",
+                        "name": "run_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_ClientGetRunMessagesJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/run-status-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the status of the run (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged run"
+                ],
+                "summary": "Get the status of the run (unprivileged)",
+                "operationId": "client-get-run-status-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Run ID",
+                        "name": "run_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_ClientGetRunStatusJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/save-userprob": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "save VCS problem settings (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged vcs"
+                ],
+                "summary": "Save VCS problem settings (unprivileged)",
+                "operationId": "client-post-save-userprob",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Serial ID of the properties",
+                        "name": "serial_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "VCS type: gitlab | github",
+                        "name": "vcs_type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language name",
+                        "name": "lang_name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "VCS URL",
+                        "name": "vcs_url",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "VCS subdir",
+                        "name": "vcs_subdir",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "VCS branch",
+                        "name": "vcs_branch_spec",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ssh private key",
+                        "name": "ssh_private_key",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Submit ID",
+                        "name": "json",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.BaseReply"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/submit-run": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "submit a program for testing and scoring (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged run"
+                ],
+                "summary": "Submit a program for testing and scoring (unprivileged)",
+                "operationId": "client-submit-run",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "prob_id or the short_name of the problem",
+                        "name": "prob_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "lang_id or short_name",
+                        "name": "lang_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End-of-Line translation type",
+                        "name": "eoln_type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Source code",
+                        "name": "file",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "format": "text",
+                        "description": "Source code",
+                        "name": "text_form",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_PostSubmitRunResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/client/submit-run-input": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "submit a program and its input for testing (unprivileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unprivileged submit"
+                ],
+                "summary": "Submit a program and its input for testing (unprivileged)",
+                "operationId": "client-submit-run-input",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "problem ID or short_name",
+                        "name": "prob_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "language ID or short_name",
+                        "name": "lang_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End-of-Line translation type",
+                        "name": "eoln_type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Source code",
+                        "name": "file",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "format": "text",
+                        "description": "Source code",
+                        "name": "text_form",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Input data",
+                        "name": "file_input",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Input data",
+                        "name": "text_form_input",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_ClientPostSubmitRunInputResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/change-registration": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "edit the user registration data (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged registration"
+                ],
+                "summary": "Edit the user registration data (privileged)",
+                "operationId": "master-post-change-registration",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User login to change registration",
+                        "name": "other_user_login",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User ID to change registration",
+                        "name": "other_user_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Contest ID",
+                        "name": "contest_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Operation: one of delete, insert, upsert, update",
+                        "name": "op",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "New status: one of ok, rejected, pending",
+                        "name": "status",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "New invisible flag",
+                        "name": "is_invisible",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "New banned flag",
+                        "name": "is_banned",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "New locked flag",
+                        "name": "is_locked",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "New incomplete flag",
+                        "name": "is_incomplete",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "New disqualified flag",
+                        "name": "is_disqualified",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "New privileged flag",
+                        "name": "is_privileged",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "New reg_readonly flag",
+                        "name": "is_reg_readonly",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Ignore errors",
+                        "name": "ignore",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Clear the user name",
+                        "name": "clear_name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "New user name",
+                        "name": "name",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/contest-status-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the contest status (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged contest"
+                ],
+                "summary": "Get the contest status (privileged)",
+                "operationId": "master-get-contest-status-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_MasterGetContestStatusJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/copy-user-info": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "copy user info from one user to another (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged user"
+                ],
+                "summary": "Copy user info from one user to another (privileged)",
+                "operationId": "master-post-copy-user-info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User login to copy info",
+                        "name": "other_user_login",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User ID to copy info",
+                        "name": "other_user_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Source contest ID",
+                        "name": "from_contest_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Destination contest ID",
+                        "name": "to_contest_id",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/create-user-session": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new session for another user (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged user"
+                ],
+                "summary": "Create a new session for another user (privileged)",
+                "operationId": "master-post-create-user-session",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User login",
+                        "name": "other_user_login",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "other_user_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Contest ID",
+                        "name": "contest_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Fake sender IP",
+                        "name": "sender_ip",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "HTTPS flag",
+                        "name": "sender_ssl_flag",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Locale ID",
+                        "name": "locale_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Session liveness duration",
+                        "name": "duration",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Create user registration if he/she is not registered",
+                        "name": "create_reg",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Base Contest ID (to copy user settings from)",
+                        "name": "base_contest_id",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-UserlistCookie"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/download-run": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the source of the run (privileged)",
+                "tags": [
+                    "privileged run"
+                ],
+                "summary": "Get the source of the run (privileged)",
+                "operationId": "master-get-download-run",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "run_id",
+                        "name": "run_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "do not generate content-disposition header",
+                        "name": "no_disp",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ej/api/v1/master/get-submit": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "get information about a submit (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged submit"
+                ],
+                "summary": "Get information about a submit (privileged)",
+                "operationId": "master-get-submit",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Contest ID",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Submit ID",
+                        "name": "submit_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Submit ID",
+                        "name": "json",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-ejudge_Submit"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/get-user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user info (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged user"
+                ],
+                "summary": "Get user info (privileged)",
+                "operationId": "master-get-user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User ID to query",
+                        "name": "other_user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User Login to query",
+                        "name": "other_user_login",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Request global (not contest-specific) info",
+                        "name": "global",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-UserlistUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-UserlistUser"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-UserlistUser"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-UserlistUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/list-languages": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List available languages (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged language"
+                ],
+                "summary": "List available languages (privileged)",
+                "operationId": "master-get-list-languages",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_MasterListLanguagesResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/list-runs-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List the runs (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged run"
+                ],
+                "summary": "List the runs (privileged)",
+                "operationId": "master-get-list-runs-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter expression",
+                        "name": "filter_expr",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "First run to list",
+                        "name": "first_run",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Last run to list",
+                        "name": "last_run",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Fields to display",
+                        "name": "field_mask",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_MasterGetListRunsJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/problem-status-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List user's problem status (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged contest"
+                ],
+                "summary": "List user's problem status (privileged)",
+                "operationId": "master-get-problem-status-json",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User login",
+                        "name": "other_user_login",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "other_user_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Contest ID",
+                        "name": "contest_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Problem ID",
+                        "name": "prob_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Problem short name",
+                        "name": "prob_short",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset from the start of contest (s)",
+                        "name": "rel_time",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Absolute time (s)",
+                        "name": "abs_time",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_MasterProblemStatusResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/raw-audit-log": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the raw audit log of the run (privileged)",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "privileged run"
+                ],
+                "summary": "Get the raw audit log of the run (privileged)",
+                "operationId": "master-get-raw-audit-log",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "run_id",
+                        "name": "run_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "run_uuid",
+                        "name": "run_uuid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ej/api/v1/master/raw-report": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the raw testing report of the run (privileged)",
+                "tags": [
+                    "privileged run"
+                ],
+                "summary": "Get the raw testing report of the run (privileged)",
+                "operationId": "master-get-raw-report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "run_id",
+                        "name": "run_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "run_uuid",
+                        "name": "run_uuid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ej/api/v1/master/run-status-json": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the info for the run (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged run"
+                ],
+                "summary": "Get the info for the run (privileged)",
+                "operationId": "master-get-run-status-json",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "contest_id",
+                        "name": "contest_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "run_id",
+                        "name": "run_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "run_uuid",
+                        "name": "run_uuid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_MasterGetRunStatusJSONResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/submit-run": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "submit a program for testing and scoring (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged run"
+                ],
+                "summary": "Submit a program for testing and scoring (privileged)",
+                "operationId": "master-submit-run",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Impersonated user login",
+                        "name": "sender_user_login",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Impersonated user ID",
+                        "name": "sender_user_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Fake sender IP",
+                        "name": "sender_ip",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "HTTPS flag",
+                        "name": "sender_ssl_flag",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "contest ID",
+                        "name": "contest_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID of the problem",
+                        "name": "problem_uuid",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "short_name or internal_name of the problem",
+                        "name": "problem_name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "prob_id of the problem",
+                        "name": "problem",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "variant of the problem",
+                        "name": "variant",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "short_name of the programming language",
+                        "name": "language_name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "lang_id or short_name",
+                        "name": "lang_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End-of-Line translation type",
+                        "name": "eoln_type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "if value \u003e 0 the run will be visible",
+                        "name": "is_visible",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "if value \u003e 0 any non OK verdict is Check failed",
+                        "name": "not_ok_is_cf",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "if value \u003e 0 the run is tested with rejudge priority",
+                        "name": "rejudge_flag",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Source code",
+                        "name": "file",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "format": "text",
+                        "description": "Source code",
+                        "name": "text_form",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_PostSubmitRunResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/ej/api/v1/master/submit-run-input": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "submit a program and its input for testing (privileged)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "privileged submit"
+                ],
+                "summary": "Submit a program and its input for testing (privileged)",
+                "operationId": "master-submit-run-input",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Impersonated user login",
+                        "name": "sender_user_login",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Impersonated user ID",
+                        "name": "sender_user_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Fake sender IP",
+                        "name": "sender_ip",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "HTTPS flag",
+                        "name": "sender_ssl_flag",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "contest ID",
+                        "name": "contest_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "problem ID or short_name",
+                        "name": "prob_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "language ID or short_name",
+                        "name": "lang_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End-of-Line translation type",
+                        "name": "eoln_type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Source code",
+                        "name": "file",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "format": "text",
+                        "description": "Source code",
+                        "name": "text_form",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Input data",
+                        "name": "file_input",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Input data",
+                        "name": "text_form_input",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ejudge.Reply-main_MasterPostSubmitRunInputResult"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ejudge.BaseReply": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Error": {
+            "type": "object",
+            "properties": {
+                "log_id": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "num": {
+                    "type": "integer"
+                },
+                "symbol": {
+                    "type": "string"
+                }
+            }
+        },
+        "ejudge.Language": {
+            "type": "object",
+            "properties": {
+                "arch": {
+                    "type": "string"
+                },
+                "binary": {
+                    "type": "boolean"
+                },
+                "clean_up_cmd": {
+                    "type": "string"
+                },
+                "clean_up_env_file": {
+                    "type": "string"
+                },
+                "cmd": {
+                    "type": "string"
+                },
+                "compile_id": {
+                    "type": "integer"
+                },
+                "compile_real_time_limit": {
+                    "type": "integer"
+                },
+                "compile_server_id": {
+                    "type": "string"
+                },
+                "compiler_container_options": {
+                    "type": "string"
+                },
+                "compiler_env": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "container_options": {
+                    "type": "string"
+                },
+                "content_type": {
+                    "type": "string"
+                },
+                "default_disabled": {
+                    "type": "boolean"
+                },
+                "disable_auto_testing": {
+                    "type": "boolean"
+                },
+                "disable_auto_update": {
+                    "type": "boolean"
+                },
+                "disable_security": {
+                    "type": "boolean"
+                },
+                "disable_testing": {
+                    "type": "boolean"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "enable_custom": {
+                    "type": "boolean"
+                },
+                "enable_ejudge_env": {
+                    "type": "boolean"
+                },
+                "enable_suid_run": {
+                    "type": "boolean"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "exe_sfx": {
+                    "type": "string"
+                },
+                "extid": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "insecure": {
+                    "type": "boolean"
+                },
+                "is_dos": {
+                    "type": "boolean"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "long_name": {
+                    "type": "string"
+                },
+                "max_file_size": {
+                    "type": "integer"
+                },
+                "max_rss_size": {
+                    "type": "integer"
+                },
+                "max_stack_size": {
+                    "type": "integer"
+                },
+                "max_vm_size": {
+                    "type": "integer"
+                },
+                "multi_header_suffix": {
+                    "type": "string"
+                },
+                "preserve_line_numbers": {
+                    "type": "boolean"
+                },
+                "priority_adjustment": {
+                    "type": "integer"
+                },
+                "run_env_file": {
+                    "type": "string"
+                },
+                "run_max_file_size": {
+                    "type": "integer"
+                },
+                "run_max_stack_size": {
+                    "type": "integer"
+                },
+                "run_max_vm_size": {
+                    "type": "integer"
+                },
+                "short_name": {
+                    "type": "string"
+                },
+                "src_sfx": {
+                    "type": "string"
+                },
+                "style_checker_cmd": {
+                    "type": "string"
+                },
+                "style_checker_env": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "super_run_dir": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "ejudge.Reply-UserlistCookie": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/ejudge.UserlistCookie"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-UserlistUser": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/ejudge.UserlistUser"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-bool": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "type": "boolean"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-ejudge_Submit": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/ejudge.Submit"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_ClientGetContestStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.ClientGetContestStatusJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_ClientGetListRunsJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.ClientGetListRunsJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_ClientGetProblemStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.ClientGetProblemStatusJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_ClientGetRunMessagesJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.ClientGetRunMessagesJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_ClientGetRunStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_ClientPostSubmitRunInputResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.ClientPostSubmitRunInputResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_EjudgeUserProb": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.EjudgeUserProb"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_MasterGetContestStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.MasterGetContestStatusJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_MasterGetListRunsJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.MasterGetListRunsJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_MasterGetRunStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.MasterGetRunStatusJSONResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_MasterListLanguagesResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.MasterListLanguagesResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_MasterPostSubmitRunInputResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.MasterPostSubmitRunInputResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_MasterProblemStatusResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.MasterProblemStatusResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Reply-main_PostSubmitRunResult": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/ejudge.Error"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "reply_id": {
+                    "type": "integer"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "$ref": "#/definitions/main.PostSubmitRunResult"
+                },
+                "server_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Run": {
+            "type": "object",
+            "properties": {
+                "contest_id": {
+                    "type": "integer"
+                },
+                "duration": {
+                    "type": "integer"
+                },
+                "eoln_type": {
+                    "type": "integer"
+                },
+                "ext_user": {
+                    "type": "string"
+                },
+                "ext_user_kind": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "ipv6_flag": {
+                    "type": "boolean"
+                },
+                "is_checked": {
+                    "type": "boolean"
+                },
+                "is_hidden": {
+                    "type": "boolean"
+                },
+                "is_imported": {
+                    "type": "boolean"
+                },
+                "is_marked": {
+                    "type": "boolean"
+                },
+                "is_readonly": {
+                    "type": "boolean"
+                },
+                "is_saved": {
+                    "type": "boolean"
+                },
+                "is_vcs": {
+                    "type": "boolean"
+                },
+                "judge_id": {
+                    "type": "integer"
+                },
+                "judge_uuid": {
+                    "type": "string"
+                },
+                "lang_id": {
+                    "type": "integer"
+                },
+                "lang_name": {
+                    "type": "string"
+                },
+                "last_change_us": {
+                    "type": "integer"
+                },
+                "locale_id": {
+                    "type": "integer"
+                },
+                "mime_type": {
+                    "type": "string"
+                },
+                "notify_driver": {
+                    "type": "integer"
+                },
+                "notify_kind": {
+                    "type": "string"
+                },
+                "notify_queue": {
+                    "type": "string"
+                },
+                "nsec": {
+                    "type": "integer"
+                },
+                "pages": {
+                    "type": "integer"
+                },
+                "passed_mode": {
+                    "type": "boolean"
+                },
+                "prob_id": {
+                    "type": "integer"
+                },
+                "prob_internal_name": {
+                    "type": "string"
+                },
+                "prob_name": {
+                    "type": "string"
+                },
+                "prob_uuid": {
+                    "type": "string"
+                },
+                "raw_score": {
+                    "type": "integer"
+                },
+                "raw_variant": {
+                    "type": "integer"
+                },
+                "run_id": {
+                    "type": "integer"
+                },
+                "run_time": {
+                    "type": "integer"
+                },
+                "run_time_us": {
+                    "type": "integer"
+                },
+                "run_uuid": {
+                    "type": "string"
+                },
+                "saved_score": {
+                    "type": "integer"
+                },
+                "saved_status": {
+                    "type": "integer"
+                },
+                "saved_status_str": {
+                    "type": "string"
+                },
+                "saved_test": {
+                    "type": "integer"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "score_adj": {
+                    "type": "integer"
+                },
+                "score_str": {
+                    "type": "string"
+                },
+                "serial_id": {
+                    "type": "integer"
+                },
+                "sha1": {
+                    "type": "string"
+                },
+                "sha256": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "ssl_flag": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "status_desc": {
+                    "type": "string"
+                },
+                "status_str": {
+                    "type": "string"
+                },
+                "store_flags": {
+                    "type": "integer"
+                },
+                "test": {
+                    "type": "integer"
+                },
+                "tests_passed": {
+                    "type": "integer"
+                },
+                "token_count": {
+                    "type": "integer"
+                },
+                "token_flags": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "user_login": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                },
+                "variant": {
+                    "type": "integer"
+                },
+                "verdict_bits": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.Submit": {
+            "type": "object",
+            "properties": {
+                "compiler_output": {
+                    "type": "string"
+                },
+                "contest_id": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "exit_code": {
+                    "type": "integer"
+                },
+                "ext_user": {
+                    "type": "string"
+                },
+                "ext_user_kind": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "string"
+                },
+                "lang_id": {
+                    "type": "integer"
+                },
+                "max_memory_used": {
+                    "type": "integer"
+                },
+                "max_rss": {
+                    "type": "integer"
+                },
+                "notify_driver": {
+                    "type": "integer"
+                },
+                "notify_kind": {
+                    "type": "string"
+                },
+                "notify_queue": {
+                    "type": "string"
+                },
+                "output": {
+                    "type": "string"
+                },
+                "prob_id": {
+                    "type": "integer"
+                },
+                "real_time": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "status_desc": {
+                    "type": "string"
+                },
+                "status_str": {
+                    "type": "string"
+                },
+                "submit_id": {
+                    "type": "integer"
+                },
+                "term_signal": {
+                    "type": "integer"
+                },
+                "test_checker_output": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.UserlistCookie": {
+            "type": "object",
+            "properties": {
+                "client_key": {
+                    "type": "string"
+                },
+                "contest_id": {
+                    "type": "integer"
+                },
+                "cookie": {
+                    "type": "string"
+                },
+                "expire": {
+                    "type": "integer"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "is_job": {
+                    "type": "boolean"
+                },
+                "is_ws": {
+                    "type": "boolean"
+                },
+                "locale_id": {
+                    "type": "integer"
+                },
+                "priv_level": {
+                    "type": "integer"
+                },
+                "recovery": {
+                    "type": "boolean"
+                },
+                "role": {
+                    "type": "integer"
+                },
+                "ssl": {
+                    "type": "boolean"
+                },
+                "team_login": {
+                    "type": "boolean"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.UserlistMember": {
+            "type": "object",
+            "properties": {
+                "birth_date": {
+                    "type": "integer"
+                },
+                "contest_id": {
+                    "type": "integer"
+                },
+                "copied_from": {
+                    "type": "integer"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "discipline": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "entry_date": {
+                    "type": "integer"
+                },
+                "fac": {
+                    "type": "string"
+                },
+                "fac_en": {
+                    "type": "string"
+                },
+                "facshort": {
+                    "type": "string"
+                },
+                "facshort_en": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "firstname_en": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "integer"
+                },
+                "grade": {
+                    "type": "integer"
+                },
+                "graduation_date": {
+                    "type": "integer"
+                },
+                "group": {
+                    "type": "string"
+                },
+                "group_en": {
+                    "type": "string"
+                },
+                "homepage": {
+                    "type": "string"
+                },
+                "inst": {
+                    "type": "string"
+                },
+                "inst_en": {
+                    "type": "string"
+                },
+                "instshort": {
+                    "type": "string"
+                },
+                "instshort_en": {
+                    "type": "string"
+                },
+                "last_access_time": {
+                    "type": "integer"
+                },
+                "last_change_time": {
+                    "type": "integer"
+                },
+                "middlename": {
+                    "type": "string"
+                },
+                "middlename_en": {
+                    "type": "string"
+                },
+                "occupation": {
+                    "type": "string"
+                },
+                "occupation_en": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "serial": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "surname_en": {
+                    "type": "string"
+                },
+                "team_role": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.UserlistUser": {
+            "type": "object",
+            "properties": {
+                "contests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ejudge.UserlistUserContest"
+                    }
+                },
+                "cookies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ejudge.UserlistCookie"
+                    }
+                },
+                "email": {
+                    "type": "string"
+                },
+                "extra1": {
+                    "type": "string"
+                },
+                "infos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ejudge.UserlistUserInfo"
+                    }
+                },
+                "is_banned": {
+                    "type": "boolean"
+                },
+                "is_invisible": {
+                    "type": "boolean"
+                },
+                "is_locked": {
+                    "type": "boolean"
+                },
+                "is_privileged": {
+                    "type": "boolean"
+                },
+                "last_access_time": {
+                    "type": "integer"
+                },
+                "last_change_time": {
+                    "type": "integer"
+                },
+                "last_login_time": {
+                    "type": "integer"
+                },
+                "last_minor_change_time": {
+                    "type": "integer"
+                },
+                "last_pwdchange_time": {
+                    "type": "integer"
+                },
+                "never_clean": {
+                    "type": "boolean"
+                },
+                "passwd_method": {
+                    "type": "integer"
+                },
+                "read_only": {
+                    "type": "boolean"
+                },
+                "registration_time": {
+                    "type": "integer"
+                },
+                "show_email": {
+                    "type": "boolean"
+                },
+                "show_login": {
+                    "type": "boolean"
+                },
+                "simple_registration": {
+                    "type": "boolean"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "user_login": {
+                    "type": "string"
+                }
+            }
+        },
+        "ejudge.UserlistUserContest": {
+            "type": "object",
+            "properties": {
+                "contest_id": {
+                    "type": "integer"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "is_banned": {
+                    "type": "boolean"
+                },
+                "is_disqualified": {
+                    "type": "boolean"
+                },
+                "is_incomplete": {
+                    "type": "boolean"
+                },
+                "is_invisible": {
+                    "type": "boolean"
+                },
+                "is_locked": {
+                    "type": "boolean"
+                },
+                "is_privileged": {
+                    "type": "boolean"
+                },
+                "is_reg_readonly": {
+                    "type": "boolean"
+                },
+                "last_change_time": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ejudge.UserlistUserInfo": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "string"
+                },
+                "avatar_id": {
+                    "type": "string"
+                },
+                "avatar_store": {
+                    "type": "string"
+                },
+                "avatar_suffix": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "city_en": {
+                    "type": "string"
+                },
+                "cnts_read_only": {
+                    "type": "boolean"
+                },
+                "contest_id": {
+                    "type": "integer"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "country_en": {
+                    "type": "string"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "exam_cypher": {
+                    "type": "string"
+                },
+                "exam_id": {
+                    "type": "string"
+                },
+                "fac": {
+                    "type": "string"
+                },
+                "fac_en": {
+                    "type": "string"
+                },
+                "facshort": {
+                    "type": "string"
+                },
+                "facshort_en": {
+                    "type": "string"
+                },
+                "field0": {
+                    "type": "string"
+                },
+                "field1": {
+                    "type": "string"
+                },
+                "field2": {
+                    "type": "string"
+                },
+                "field3": {
+                    "type": "string"
+                },
+                "field4": {
+                    "type": "string"
+                },
+                "field5": {
+                    "type": "string"
+                },
+                "field6": {
+                    "type": "string"
+                },
+                "field7": {
+                    "type": "string"
+                },
+                "field8": {
+                    "type": "string"
+                },
+                "field9": {
+                    "type": "string"
+                },
+                "homepage": {
+                    "type": "string"
+                },
+                "inst": {
+                    "type": "string"
+                },
+                "inst_en": {
+                    "type": "string"
+                },
+                "instnum": {
+                    "type": "integer"
+                },
+                "instshort": {
+                    "type": "string"
+                },
+                "instshort_en": {
+                    "type": "string"
+                },
+                "languages": {
+                    "type": "string"
+                },
+                "last_access_time": {
+                    "type": "integer"
+                },
+                "last_change_time": {
+                    "type": "integer"
+                },
+                "last_login_time": {
+                    "type": "integer"
+                },
+                "last_pwdchange_time": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ejudge.UserlistMember"
+                    }
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "printer_name": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "spelling": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "team_passwd_method": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "user_name": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.ClientGetContestStatusJSONCompiler": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "long_name": {
+                    "type": "string"
+                },
+                "short_name": {
+                    "type": "string"
+                },
+                "src_sfx": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.ClientGetContestStatusJSONProblem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "long_name": {
+                    "type": "string"
+                },
+                "short_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.ClientGetContestStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "compilers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.ClientGetContestStatusJSONCompiler"
+                    }
+                },
+                "contest": {
+                    "$ref": "#/definitions/main.EjudgeContestStatus"
+                },
+                "online": {
+                    "$ref": "#/definitions/main.EjudgeContestOnline"
+                },
+                "problems": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.ClientGetContestStatusJSONProblem"
+                    }
+                }
+            }
+        },
+        "main.ClientGetListRunsJSONResult": {
+            "type": "object",
+            "properties": {
+                "runs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.ClientGetListRunsJSONRun"
+                    }
+                }
+            }
+        },
+        "main.ClientGetListRunsJSONRun": {
+            "type": "object",
+            "properties": {
+                "failed_test": {
+                    "type": "integer"
+                },
+                "passed_tests": {
+                    "type": "integer"
+                },
+                "prob_id": {
+                    "type": "integer"
+                },
+                "run_id": {
+                    "type": "integer"
+                },
+                "run_time": {
+                    "type": "integer"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ClientGetProblemStatusJSONProblem": {
+            "type": "object",
+            "properties": {
+                "acm_run_penalty": {
+                    "type": "integer"
+                },
+                "combined_stdin": {
+                    "type": "boolean"
+                },
+                "combined_stdout": {
+                    "type": "boolean"
+                },
+                "compile_error_penalty": {
+                    "type": "integer"
+                },
+                "compilers": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "disable_stderr": {
+                    "type": "boolean"
+                },
+                "disable_submit_after_ok": {
+                    "type": "boolean"
+                },
+                "disable_tab": {
+                    "type": "boolean"
+                },
+                "disable_testing": {
+                    "type": "boolean"
+                },
+                "disable_user_submit": {
+                    "type": "boolean"
+                },
+                "disqualified_penalty": {
+                    "type": "integer"
+                },
+                "enable_compilation": {
+                    "type": "boolean"
+                },
+                "enable_max_stack_size": {
+                    "type": "boolean"
+                },
+                "enable_submit_after_reject": {
+                    "type": "boolean"
+                },
+                "enable_tokens": {
+                    "type": "boolean"
+                },
+                "est_stmt_size": {
+                    "type": "integer"
+                },
+                "full_score": {
+                    "type": "integer"
+                },
+                "full_user_score": {
+                    "type": "integer"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ignore_compile_errors": {
+                    "type": "boolean"
+                },
+                "ignore_prev_ac": {
+                    "type": "boolean"
+                },
+                "input_file": {
+                    "type": "string"
+                },
+                "is_statement_avaiable": {
+                    "type": "boolean"
+                },
+                "long_name": {
+                    "type": "string"
+                },
+                "max_rss_size": {
+                    "type": "integer"
+                },
+                "max_stack_size": {
+                    "type": "integer"
+                },
+                "max_user_run_count": {
+                    "type": "integer"
+                },
+                "max_vm_size": {
+                    "type": "integer"
+                },
+                "min_score_1": {
+                    "type": "integer"
+                },
+                "min_score_2": {
+                    "type": "integer"
+                },
+                "min_tests_to_accept": {
+                    "type": "integer"
+                },
+                "ok_status": {
+                    "type": "string"
+                },
+                "output_file": {
+                    "type": "string"
+                },
+                "real_time_limit_ms": {
+                    "type": "integer"
+                },
+                "run_penalty": {
+                    "type": "integer"
+                },
+                "score_multiplier": {
+                    "type": "integer"
+                },
+                "short_name": {
+                    "type": "string"
+                },
+                "stand_column": {
+                    "type": "string"
+                },
+                "stand_hide_time": {
+                    "type": "boolean"
+                },
+                "stand_ignore_score": {
+                    "type": "boolean"
+                },
+                "stand_last_column": {
+                    "type": "boolean"
+                },
+                "stand_name": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "integer"
+                },
+                "team_enable_ce_view": {
+                    "type": "boolean"
+                },
+                "team_enable_rep_view": {
+                    "type": "boolean"
+                },
+                "test_score": {
+                    "type": "integer"
+                },
+                "tests_to_accept": {
+                    "type": "integer"
+                },
+                "time_limit_ms": {
+                    "type": "integer"
+                },
+                "tokens_for_user_ac": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "use_ac_not_ok": {
+                    "type": "boolean"
+                },
+                "use_stdin": {
+                    "type": "boolean"
+                },
+                "use_stdout": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "main.ClientGetProblemStatusJSONProblemStatus": {
+            "type": "object",
+            "properties": {
+                "all_attempts": {
+                    "type": "integer"
+                },
+                "attempts": {
+                    "type": "integer"
+                },
+                "best_run": {
+                    "type": "integer"
+                },
+                "best_score": {
+                    "type": "integer"
+                },
+                "ce_attempts": {
+                    "type": "integer"
+                },
+                "deadline": {
+                    "type": "integer"
+                },
+                "disqualified": {
+                    "type": "integer"
+                },
+                "eff_attempts": {
+                    "type": "integer"
+                },
+                "effective_time": {
+                    "type": "integer"
+                },
+                "is_accepted": {
+                    "type": "boolean"
+                },
+                "is_autook": {
+                    "type": "boolean"
+                },
+                "is_eff_time_needed": {
+                    "type": "boolean"
+                },
+                "is_last_untokenized": {
+                    "type": "boolean"
+                },
+                "is_marked": {
+                    "type": "boolean"
+                },
+                "is_pending": {
+                    "type": "boolean"
+                },
+                "is_pending_review": {
+                    "type": "boolean"
+                },
+                "is_rejected": {
+                    "type": "boolean"
+                },
+                "is_solved": {
+                    "type": "boolean"
+                },
+                "is_submittable": {
+                    "type": "boolean"
+                },
+                "is_tabable": {
+                    "type": "boolean"
+                },
+                "is_transient": {
+                    "type": "boolean"
+                },
+                "is_viewable": {
+                    "type": "boolean"
+                },
+                "prev_successes": {
+                    "type": "integer"
+                },
+                "token_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ClientGetProblemStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "problem": {
+                    "$ref": "#/definitions/main.ClientGetProblemStatusJSONProblem"
+                },
+                "problem_status": {
+                    "$ref": "#/definitions/main.ClientGetProblemStatusJSONProblemStatus"
+                }
+            }
+        },
+        "main.ClientGetRunMessagesJSONMessage": {
+            "type": "object",
+            "properties": {
+                "clar_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "$ref": "#/definitions/main.EjudgeEncodedContent"
+                },
+                "from": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "time_us": {
+                    "type": "integer"
+                },
+                "to": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ClientGetRunMessagesJSONResult": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.ClientGetRunMessagesJSONMessage"
+                    }
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONCompilerOutput": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "$ref": "#/definitions/main.EjudgeEncodedContent"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "compiler_output": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONCompilerOutput"
+                },
+                "run": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONRun"
+                },
+                "testing_report": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONTestingReport"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONRun": {
+            "type": "object",
+            "properties": {
+                "duration": {
+                    "type": "integer"
+                },
+                "effective_time": {
+                    "type": "integer"
+                },
+                "failed_test": {
+                    "type": "integer"
+                },
+                "is_compiler_output_available": {
+                    "type": "boolean"
+                },
+                "is_failed_test_available": {
+                    "type": "boolean"
+                },
+                "is_hidden": {
+                    "type": "boolean"
+                },
+                "is_imported": {
+                    "type": "boolean"
+                },
+                "is_minimal_report": {
+                    "type": "boolean"
+                },
+                "is_passed_tests_available": {
+                    "type": "boolean"
+                },
+                "is_report_available": {
+                    "type": "boolean"
+                },
+                "is_report_enabled": {
+                    "type": "boolean"
+                },
+                "is_score_available": {
+                    "type": "boolean"
+                },
+                "is_src_enabled": {
+                    "type": "boolean"
+                },
+                "is_standard_problem": {
+                    "type": "boolean"
+                },
+                "is_with_duration": {
+                    "type": "boolean"
+                },
+                "is_with_effective_time": {
+                    "type": "boolean"
+                },
+                "lang_id": {
+                    "type": "integer"
+                },
+                "message_count": {
+                    "type": "integer"
+                },
+                "passed_tests": {
+                    "type": "integer"
+                },
+                "prob_id": {
+                    "type": "integer"
+                },
+                "run_id": {
+                    "type": "integer"
+                },
+                "run_time": {
+                    "type": "integer"
+                },
+                "run_time_us": {
+                    "type": "integer"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "score_str": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "src_sfx": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONTest": {
+            "type": "object",
+            "properties": {
+                "args": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONTestArgs"
+                },
+                "checker": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONTestBrief"
+                },
+                "correct": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONTestBrief"
+                },
+                "error": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONTestBrief"
+                },
+                "exit_code": {
+                    "type": "integer"
+                },
+                "exit_comment": {
+                    "type": "string"
+                },
+                "input": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONTestBrief"
+                },
+                "is_visibility_exists": {
+                    "type": "boolean"
+                },
+                "is_visibility_full": {
+                    "type": "boolean"
+                },
+                "max_score": {
+                    "type": "integer"
+                },
+                "num": {
+                    "type": "integer"
+                },
+                "output": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONTestBrief"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "team_comment": {
+                    "type": "string"
+                },
+                "term_signal": {
+                    "type": "integer"
+                },
+                "time_ms": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONTestArgs": {
+            "type": "object",
+            "properties": {
+                "is_too_big": {
+                    "type": "boolean"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONTestBrief": {
+            "type": "object",
+            "properties": {
+                "is_binary": {
+                    "type": "boolean"
+                },
+                "is_too_big": {
+                    "type": "boolean"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONTestingReport": {
+            "type": "object",
+            "properties": {
+                "tests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.ClientGetRunStatusJSONTest"
+                    }
+                },
+                "valuer_comment": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONValuerComment"
+                },
+                "valuer_judge_comment": {
+                    "$ref": "#/definitions/main.ClientGetRunStatusJSONValuerJudgeComment"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONValuerComment": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "$ref": "#/definitions/main.EjudgeEncodedContent"
+                }
+            }
+        },
+        "main.ClientGetRunStatusJSONValuerJudgeComment": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "$ref": "#/definitions/main.EjudgeEncodedContent"
+                }
+            }
+        },
+        "main.ClientPostSubmitRunInputResult": {
+            "type": "object",
+            "properties": {
+                "submit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.EjudgeContestOnline": {
+            "type": "object",
+            "properties": {
+                "max_time": {
+                    "type": "integer"
+                },
+                "max_user_count": {
+                    "type": "integer"
+                },
+                "user_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.EjudgeContestStatus": {
+            "type": "object",
+            "properties": {
+                "board_fog_duration": {
+                    "type": "integer"
+                },
+                "board_unfog_duration": {
+                    "type": "integer"
+                },
+                "close_time": {
+                    "type": "integer"
+                },
+                "contest_load_time": {
+                    "type": "integer"
+                },
+                "duration": {
+                    "type": "integer"
+                },
+                "expected_stop_time": {
+                    "type": "integer"
+                },
+                "freeze_time": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_clients_suspended": {
+                    "type": "boolean"
+                },
+                "is_continue_enabled": {
+                    "type": "boolean"
+                },
+                "is_final_visibility": {
+                    "type": "boolean"
+                },
+                "is_freezable": {
+                    "type": "boolean"
+                },
+                "is_frozen": {
+                    "type": "boolean"
+                },
+                "is_judge_score": {
+                    "type": "boolean"
+                },
+                "is_olympiad_accepting_mode": {
+                    "type": "boolean"
+                },
+                "is_printing_suspended": {
+                    "type": "boolean"
+                },
+                "is_report_closed": {
+                    "type": "boolean"
+                },
+                "is_report_open": {
+                    "type": "boolean"
+                },
+                "is_restartable": {
+                    "type": "boolean"
+                },
+                "is_source_closed": {
+                    "type": "boolean"
+                },
+                "is_source_open": {
+                    "type": "boolean"
+                },
+                "is_standings_updated": {
+                    "type": "boolean"
+                },
+                "is_started": {
+                    "type": "boolean"
+                },
+                "is_stopped": {
+                    "type": "boolean"
+                },
+                "is_testing_finished": {
+                    "type": "boolean"
+                },
+                "is_testing_suspended": {
+                    "type": "boolean"
+                },
+                "is_unlimited": {
+                    "type": "boolean"
+                },
+                "is_upsolving": {
+                    "type": "boolean"
+                },
+                "is_valuer_judge_comments": {
+                    "type": "boolean"
+                },
+                "is_virtual": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "name_en": {
+                    "type": "string"
+                },
+                "open_time": {
+                    "type": "integer"
+                },
+                "scheduled_finish_time": {
+                    "type": "integer"
+                },
+                "scheduled_start_time": {
+                    "type": "integer"
+                },
+                "score_system": {
+                    "type": "integer"
+                },
+                "server_start_time": {
+                    "type": "integer"
+                },
+                "start_time": {
+                    "type": "integer"
+                },
+                "stop_time": {
+                    "type": "integer"
+                },
+                "unfreeze_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.EjudgeEncodedContent": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.EjudgeUserProb": {
+            "type": "object",
+            "properties": {
+                "contest_id": {
+                    "type": "integer"
+                },
+                "create_time_ms": {
+                    "type": "integer"
+                },
+                "gitlab_token": {
+                    "type": "string"
+                },
+                "hook_id": {
+                    "type": "string"
+                },
+                "lang_name": {
+                    "type": "string"
+                },
+                "last_change_time_ms": {
+                    "type": "integer"
+                },
+                "prob_id": {
+                    "type": "integer"
+                },
+                "serial_id": {
+                    "type": "integer"
+                },
+                "ssh_private_key": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "vcs_branch_spec": {
+                    "type": "string"
+                },
+                "vcs_subdir": {
+                    "type": "string"
+                },
+                "vcs_type": {
+                    "type": "string"
+                },
+                "vcs_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.MasterGetContestStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "contest": {
+                    "$ref": "#/definitions/main.EjudgeContestStatus"
+                },
+                "online": {
+                    "$ref": "#/definitions/main.EjudgeContestOnline"
+                }
+            }
+        },
+        "main.MasterGetListRunsJSONResult": {
+            "type": "object",
+            "properties": {
+                "displayed_mask": {
+                    "type": "string"
+                },
+                "displayed_size": {
+                    "type": "integer"
+                },
+                "field_mask": {
+                    "type": "integer"
+                },
+                "filter_expr": {
+                    "type": "string"
+                },
+                "filtered_runs": {
+                    "type": "integer"
+                },
+                "first_run": {
+                    "type": "integer"
+                },
+                "last_run": {
+                    "type": "integer"
+                },
+                "listed_runs": {
+                    "type": "integer"
+                },
+                "runs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ejudge.Run"
+                    }
+                },
+                "total_runs": {
+                    "type": "integer"
+                },
+                "transient_runs": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.MasterGetRunStatusJSONResult": {
+            "type": "object",
+            "properties": {
+                "accepting_mode": {
+                    "type": "boolean"
+                },
+                "run": {
+                    "$ref": "#/definitions/ejudge.Run"
+                }
+            }
+        },
+        "main.MasterListLanguagesEjudge": {
+            "type": "object",
+            "properties": {
+                "enable_compile_container": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "main.MasterListLanguagesGlobal": {
+            "type": "object",
+            "properties": {
+                "compile_max_file_size": {
+                    "type": "integer"
+                },
+                "compile_max_rss_size": {
+                    "type": "integer"
+                },
+                "compile_max_stack_size": {
+                    "type": "integer"
+                },
+                "compile_max_vm_size": {
+                    "type": "integer"
+                },
+                "compile_server_id": {
+                    "type": "integer"
+                },
+                "enable_language_import": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "main.MasterListLanguagesResult": {
+            "type": "object",
+            "properties": {
+                "ejudge": {
+                    "$ref": "#/definitions/main.MasterListLanguagesEjudge"
+                },
+                "global": {
+                    "$ref": "#/definitions/main.MasterListLanguagesGlobal"
+                },
+                "languages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ejudge.Language"
+                    }
+                }
+            }
+        },
+        "main.MasterPostSubmitRunInputResult": {
+            "type": "object",
+            "properties": {
+                "submit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.MasterProblemStatusProblem": {
+            "type": "object",
+            "properties": {
+                "acm_run_penalty": {
+                    "type": "integer"
+                },
+                "combined_stdin": {
+                    "type": "boolean"
+                },
+                "combined_stdout": {
+                    "type": "boolean"
+                },
+                "compile_error_penalty": {
+                    "type": "integer"
+                },
+                "compilers": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "disable_auto_testing": {
+                    "type": "boolean"
+                },
+                "disable_stderr": {
+                    "type": "boolean"
+                },
+                "disable_submit_after_ok": {
+                    "type": "boolean"
+                },
+                "disable_tab": {
+                    "type": "boolean"
+                },
+                "disable_testing": {
+                    "type": "boolean"
+                },
+                "disable_user_submit": {
+                    "type": "boolean"
+                },
+                "disable_vm_size_limit": {
+                    "type": "boolean"
+                },
+                "disqualified_penalty": {
+                    "type": "integer"
+                },
+                "enable_compilation": {
+                    "type": "boolean"
+                },
+                "enable_max_stack_size": {
+                    "type": "boolean"
+                },
+                "enable_submit_after_reject": {
+                    "type": "boolean"
+                },
+                "enable_tokens": {
+                    "type": "boolean"
+                },
+                "est_stmt_size": {
+                    "type": "integer"
+                },
+                "full_score": {
+                    "type": "integer"
+                },
+                "full_user_score": {
+                    "type": "integer"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ignore_compile_errors": {
+                    "type": "boolean"
+                },
+                "ignore_prev_ac": {
+                    "type": "boolean"
+                },
+                "input_file": {
+                    "type": "string"
+                },
+                "is_statement_avaiable": {
+                    "type": "boolean"
+                },
+                "long_name": {
+                    "type": "string"
+                },
+                "max_rss_size": {
+                    "type": "integer"
+                },
+                "max_stack_size": {
+                    "type": "integer"
+                },
+                "max_user_run_count": {
+                    "type": "integer"
+                },
+                "max_vm_size": {
+                    "type": "integer"
+                },
+                "min_score_1": {
+                    "type": "integer"
+                },
+                "min_score_2": {
+                    "type": "integer"
+                },
+                "min_tests_to_accept": {
+                    "type": "integer"
+                },
+                "ok_status": {
+                    "type": "string"
+                },
+                "output_file": {
+                    "type": "string"
+                },
+                "real_time_limit_ms": {
+                    "type": "integer"
+                },
+                "run_penalty": {
+                    "type": "integer"
+                },
+                "score_multiplier": {
+                    "type": "integer"
+                },
+                "short_name": {
+                    "type": "string"
+                },
+                "stand_column": {
+                    "type": "string"
+                },
+                "stand_hide_time": {
+                    "type": "boolean"
+                },
+                "stand_ignore_score": {
+                    "type": "boolean"
+                },
+                "stand_last_column": {
+                    "type": "boolean"
+                },
+                "stand_name": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "integer"
+                },
+                "team_enable_ce_view": {
+                    "type": "boolean"
+                },
+                "team_enable_rep_view": {
+                    "type": "boolean"
+                },
+                "test_score": {
+                    "type": "integer"
+                },
+                "tests_to_accept": {
+                    "type": "integer"
+                },
+                "time_limit_ms": {
+                    "type": "integer"
+                },
+                "tokens_for_user_ac": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "use_ac_not_ok": {
+                    "type": "boolean"
+                },
+                "use_stdin": {
+                    "type": "boolean"
+                },
+                "use_stdout": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "main.MasterProblemStatusProblemStatus": {
+            "type": "object",
+            "properties": {
+                "all_attempts": {
+                    "type": "integer"
+                },
+                "attempts": {
+                    "type": "integer"
+                },
+                "best_run": {
+                    "type": "integer"
+                },
+                "best_score": {
+                    "type": "integer"
+                },
+                "ce_attempts": {
+                    "type": "integer"
+                },
+                "date_penalty": {
+                    "type": "integer"
+                },
+                "deadline": {
+                    "type": "integer"
+                },
+                "disqualified": {
+                    "type": "integer"
+                },
+                "eff_attempts": {
+                    "type": "integer"
+                },
+                "effective_time": {
+                    "type": "integer"
+                },
+                "is_accepted": {
+                    "type": "boolean"
+                },
+                "is_autook": {
+                    "type": "boolean"
+                },
+                "is_eff_time_needed": {
+                    "type": "boolean"
+                },
+                "is_last_untokenized": {
+                    "type": "boolean"
+                },
+                "is_marked": {
+                    "type": "boolean"
+                },
+                "is_pending": {
+                    "type": "boolean"
+                },
+                "is_pending_review": {
+                    "type": "boolean"
+                },
+                "is_rejected": {
+                    "type": "boolean"
+                },
+                "is_solved": {
+                    "type": "boolean"
+                },
+                "is_submittable": {
+                    "type": "boolean"
+                },
+                "is_tabable": {
+                    "type": "boolean"
+                },
+                "is_transient": {
+                    "type": "boolean"
+                },
+                "is_viewable": {
+                    "type": "boolean"
+                },
+                "next_soft_deadline": {
+                    "type": "integer"
+                },
+                "penalty_formula": {
+                    "type": "string"
+                },
+                "prev_successes": {
+                    "type": "integer"
+                },
+                "token_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.MasterProblemStatusResult": {
+            "type": "object",
+            "properties": {
+                "not_started": {
+                    "type": "boolean"
+                },
+                "problem": {
+                    "$ref": "#/definitions/main.MasterProblemStatusProblem"
+                },
+                "problem_status": {
+                    "$ref": "#/definitions/main.MasterProblemStatusProblemStatus"
+                }
+            }
+        },
+        "main.PostSubmitRunResult": {
+            "type": "object",
+            "properties": {
+                "run_id": {
+                    "type": "integer"
+                },
+                "run_uuid": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "API Key Authorization",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
