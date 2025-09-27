@@ -37,6 +37,8 @@ All handlers use async sessions to interact with the database. Responses are sim
 
 ### Ejudge integration primitives
 - **Typed schema hub:** `backend/ejudge/models.py` centralises the Pydantic models describing the `submit-run`, `submit-run-input`, `get-submit`, and `get-user` endpoints, plus the supporting notification structures.
+- **Async HTTP wrapper:** `backend/ejudge/client.py` exposes `EjudgeClient`, an async helper that translates the models into correctly encoded HTTP requests (form, multipart, or query string) and validates responses. It normalises authentication headers (`Authorization: Bearer AQAA<TOKEN>`), forces `json=1` semantics, and raises rich exceptions (`EjudgeClientError`, `EjudgeReplyError`) for both transport failures and `ok=false` replies.
+- **Testing & mocks:** `backend/ejudge/mocks.py` supplies canned Pydantic reply builders and `create_mock_transport`, letting unit tests stand up a fully in-memory ejudge double via `httpx.MockTransport` while asserting on the emitted requests.
 - **Usage guidance:** the models enforce mutually exclusive fields (problem selector, language selector, payload inputs) via validators so client code cannot accidentally craft invalid multipart requests.
 - **Autonomy-friendly docs:** the module includes detailed field annotations and docstrings explaining how each value maps to the upstream wiki and Swagger specification, enabling AI agents to extend the integration safely without re-reading the raw JSON spec.
 
