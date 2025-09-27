@@ -25,6 +25,8 @@ dev = [
     "pyperclip",
 ]
 
+[tool.setuptools]
+py-modules = []
 
 [tool.ruff]
 line-length = 160
