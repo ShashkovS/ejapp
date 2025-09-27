@@ -196,7 +196,7 @@ class EjudgeError(EjudgeBaseModel):
     message: Annotated[str | None, Field(description='Optional verbose description returned by ejudge.')] = None
 
 
-class EjudgeReply(EjudgeBaseModel):
+class EjudgeReply[T](EjudgeBaseModel):
     """Generic wrapper for ejudge reply envelopes."""
 
     ok: bool
@@ -204,8 +204,11 @@ class EjudgeReply(EjudgeBaseModel):
     server_time: Annotated[int | None, Field(description='Unix timestamp reported by ejudge.')] = None
     reply_id: Annotated[int | None, Field(description='Opaque response identifier used by ejudge.')] = None
     request_id: Annotated[int | None, Field(description='Identifier correlating the reply with the originating request.')] = None
-    result: Annotated[Any | None, Field(description='Successful payload returned by ejudge.')] = None
+    result: Annotated[T | None, Field(description='Successful payload returned by ejudge.')] = None
     error: Annotated[EjudgeError | None, Field(description='Error details when ``ok`` is false.')] = None
+
+
+EjudgeReplyAny = EjudgeReply[Any]
 
 
 class SubmitRunResult(EjudgeBaseModel):

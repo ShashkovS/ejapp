@@ -32,6 +32,8 @@ EXCLUDED_DIRS = {
     "dist",
     "build",
     ".pytest_cache",
+    ".ruff_cache",
+    "ejapp.egg-info",
 }
 
 # Add complete file names you want to exclude.
@@ -39,6 +41,7 @@ EXCLUDED_FILES = {
     ".env",
     "package-lock.json",
     "yarn.lock",
+    "ejudge_doc.json",
     # The script itself should be excluded
     os.path.basename(__file__),
 }

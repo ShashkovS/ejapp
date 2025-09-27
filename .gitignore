@@ -7,3 +7,9 @@
 /backend/*.db
 /backend/.e2e-db/
 **/__pycache__/
+/backend/ejapp.egg-info/dependency_links.txt
+/backend/ejapp.egg-info/PKG-INFO
+/backend/ejapp.egg-info/requires.txt
+/backend/ejapp.egg-info/SOURCES.txt
+/backend/ejapp.egg-info/top_level.txt
+/ejapp.db
