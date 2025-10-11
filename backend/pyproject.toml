@@ -17,6 +17,7 @@ dependencies = [
     "pytest",
     "httpx",
     "greenlet",
+    "xmltodict",
 ]
 
 [project.optional-dependencies]

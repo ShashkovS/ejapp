@@ -9,7 +9,6 @@ export default defineConfig({
     headless: true,
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  // ESM-пути на setup/teardown:
   globalSetup: './tests/global-setup.mjs',
   globalTeardown: './tests/global-teardown.mjs',
 });
