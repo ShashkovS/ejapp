@@ -78,6 +78,11 @@
   make test-e2e
   ```
   The E2E flow builds the frontend with `VITE_API_BASE=http://localhost:18100`, spins up a preview server on port 63343, and expects the backend to be running separately (often via `E2E=1 make run-backend` in another terminal for an isolated database).
+- **Ejudge integration tests** (real HTTP calls; requires credentials):
+  ```bash
+  EJUDGE_ORIGIN="https://ejudge.shashkovs.ru" EJUDGE_TOKEN="<token>" pytest backend/tests/ejudge/test_integration.py
+  ```
+  Optional knobs `EJUDGE_CONTEST_ID` and `EJUDGE_RUN_FILTER` let you target a different contest or subset of runs without editing the suite.
 
 ## Database Migrations
 - Create a new migration:
