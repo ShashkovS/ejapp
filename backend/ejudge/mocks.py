@@ -57,15 +57,19 @@ def create_mock_transport(
 ) -> tuple[httpx.MockTransport, list[RecordedCall]]:
     """Create an :class:`httpx.MockTransport` returning canned ejudge replies."""
 
-    responses: MutableMapping[str, tuple[int, Mapping[str, Any]]] = {}
+    responses: MutableMapping[tuple[str, str], tuple[int, Mapping[str, Any]]] = {}
+
+    def register(method: str, path: str, payload: Any) -> None:
+        responses[(method, path)] = _coerce_payload(payload)
+
     if submit_run is not None:
-        responses['submit-run'] = _coerce_payload(submit_run)
+        register('POST', '/ej/api/v1/master/submit-run', submit_run)
     if submit_run_input is not None:
-        responses['submit-run-input'] = _coerce_payload(submit_run_input)
+        register('POST', '/ej/api/v1/master/submit-run-input', submit_run_input)
     if get_submit is not None:
-        responses['get-submit'] = _coerce_payload(get_submit)
+        register('GET', '/ej/api/v1/master/get-submit', get_submit)
     if get_user is not None:
-        responses['get-user'] = _coerce_payload(get_user)
+        register('GET', '/ej/api/v1/master/get-user', get_user)
 
     calls: list[RecordedCall] = []
 
@@ -74,13 +78,18 @@ def create_mock_transport(
         recorded = RecordedCall(method=request.method, url=request.url, headers=httpx.Headers(request.headers), content=content)
         calls.append(recorded)
 
-        action = request.url.params.get('action')
-        if action is None:
-            return httpx.Response(400, json={'ok': False, 'error': {'symbol': 'missing-action'}})
-
-        status_and_payload = responses.get(action)
+        status_and_payload = responses.get((request.method, request.url.path))
         if status_and_payload is None:
-            return httpx.Response(404, json={'ok': False, 'error': {'symbol': 'unhandled-action', 'message': action}})
+            return httpx.Response(
+                404,
+                json={
+                    'ok': False,
+                    'error': {
+                        'symbol': 'unhandled-path',
+                        'message': f'{request.method} {request.url.path}',
+                    },
+                },
+            )
 
         status_code, payload = status_and_payload
         return httpx.Response(status_code, json=payload)

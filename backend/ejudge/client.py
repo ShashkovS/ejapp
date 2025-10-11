@@ -1,22 +1,13 @@
-"""Async HTTP client wrappers around the ejudge API.
-
-The module exposes :class:`EjudgeClient` - a thin but fully typed facade that
-translates our Pydantic request models into ``httpx`` calls and validates the
-JSON replies documented in ``backend/ejudge/doc.json``.  It intentionally
-keeps the I/O surface extremely small (one POST endpoint and two GET
-endpoints) so that service code can reason about ejudge interactions without
-sprinkling low-level HTTP glue everywhere.
-
-The helpers defined here are deliberately chatty in their docstrings to serve
-as inline documentation for future autonomous agents.  When the integration
-grows beyond a single file, these notes should migrate to ``ARCHITECTURE.md``.
-"""
+"""Async access helpers for the public ejudge HTTP API."""
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping
+import json
+from collections.abc import Callable, Iterable, Mapping, MutableMapping
 from dataclasses import dataclass
-from typing import Any, TypeVar
+from functools import cached_property
+from importlib import resources
+from typing import Any, TypedDict, TypeVar
 
 import httpx
 from pydantic import ValidationError
@@ -57,6 +48,25 @@ class _FormPayload:
 
     data: MutableMapping[str, str]
     files: MutableMapping[str, tuple[str, bytes | str]]
+
+
+class _ParameterSpec(TypedDict):
+    name: str
+    location: str
+    required: bool
+    type: str | None
+
+
+@dataclass(slots=True, frozen=True)
+class _EndpointSpec:
+    """Runtime description of an ejudge endpoint loaded from the OpenAPI spec."""
+
+    method: str
+    path: str
+    name: str
+    description: str
+    params: tuple[_ParameterSpec, ...]
+    response_kind: str  # ``json`` | ``text`` | ``bytes``
 
 
 def _stringify(value: Any) -> str:
@@ -112,15 +122,91 @@ def _prepare_submit_run_input_payload(request: SubmitRunInputRequest) -> _FormPa
     return _FormPayload(data=data, files=files)
 
 
+def _load_operations() -> dict[str, dict[str, _EndpointSpec]]:
+    doc_path = resources.files(__package__).joinpath('ejudge_doc.json')
+    with doc_path.open('r', encoding='utf-8') as fh:
+        spec = json.load(fh)
+
+    operations: dict[str, dict[str, _EndpointSpec]] = {'client': {}, 'master': {}}
+
+    for path, methods in spec['paths'].items():
+        try:
+            scope = path.split('/')[4]
+        except IndexError as exc:  # pragma: no cover - sanity guard
+            raise RuntimeError(f'Unable to determine ejudge scope for path {path!r}') from exc
+
+        if scope not in operations:
+            continue
+
+        for method, payload in methods.items():
+            name = path.rsplit('/', 1)[-1].replace('-', '_')
+            produces: Iterable[str] = payload.get('produces') or ()
+            responses = payload.get('responses', {})
+            has_schema = any(response.get('schema') for response in responses.values())
+            if produces:
+                if any('json' in item for item in produces):
+                    response_kind = 'json'
+                elif any('text' in item for item in produces):
+                    response_kind = 'text'
+                else:
+                    response_kind = 'bytes'
+            elif has_schema:
+                # Most endpoints declare JSON schema without ``produces``.
+                response_kind = 'json'
+            else:
+                response_kind = 'text'
+
+            params: list[_ParameterSpec] = []
+            for parameter in payload.get('parameters', []):
+                params.append(
+                    {
+                        'name': parameter['name'],
+                        'location': parameter['in'],
+                        'required': bool(parameter.get('required', False)),
+                        'type': parameter.get('type'),
+                    }
+                )
+
+            description = payload.get('summary') or payload.get('description') or ''
+
+            operations[scope][name] = _EndpointSpec(
+                method=method.upper(),
+                path=path,
+                name=name,
+                description=description,
+                params=tuple(params),
+                response_kind=response_kind,
+            )
+
+    return operations
+
+
+class _Namespace:
+    """Call-through helper exposing operations as async methods."""
+
+    def __init__(self, owner: EjudgeClient, operations: Mapping[str, _EndpointSpec]):
+        self._owner = owner
+        for spec in operations.values():
+            setattr(self, spec.name, self._wrap(spec))
+
+    def _wrap(self, spec: _EndpointSpec) -> Callable[..., Any]:
+        async def method(**kwargs: Any) -> Any:
+            return await self._owner._call_operation(spec, kwargs)
+
+        method.__name__ = spec.name
+        if spec.description:
+            method.__doc__ = spec.description
+        return method
+
+
 class EjudgeClient:
-    """High-level helper for calling the subset of ejudge HTTP API we rely on."""
+    """High-level helper for calling the ejudge HTTP API documented in ``ejudge_doc.json``."""
 
     def __init__(
         self,
         base_url: str,
         api_token: str,
         *,
-        endpoint: str = '',
         timeout: float | httpx.Timeout | None = 10.0,
         transport: httpx.BaseTransport | None = None,
         http_client: httpx.AsyncClient | None = None,
@@ -130,12 +216,15 @@ class EjudgeClient:
             raise ValueError(msg)
 
         self._authorization = f'Bearer AQAA{api_token}'
-        self._endpoint = endpoint
         self._own_client = http_client is None
         if http_client is None:
             self._client = httpx.AsyncClient(base_url=base_url, timeout=timeout, transport=transport)
         else:
             self._client = http_client
+
+        operations = self._operations
+        self.client = _Namespace(self, operations['client'])
+        self.master = _Namespace(self, operations['master'])
 
     async def __aenter__(self) -> EjudgeClient:
         return self
@@ -147,58 +236,81 @@ class EjudgeClient:
         if self._own_client:
             await self._client.aclose()
 
-    # -- Public API -----------------------------------------------------
+    # -- Typed convenience wrappers -------------------------------------
 
     async def submit_run(self, request: SubmitRunRequest) -> SubmitRunReply:
         payload = _prepare_submit_run_payload(request)
-        response = await self._request('POST', request.action, data=payload.data, files=payload.files)
+        response = await self._request('POST', '/ej/api/v1/master/submit-run', data=payload.data, files=payload.files)
         return self._parse_reply(response, SubmitRunReply)
 
     async def submit_run_input(self, request: SubmitRunInputRequest) -> SubmitRunInputReply:
         payload = _prepare_submit_run_input_payload(request)
-        response = await self._request('POST', request.action, data=payload.data, files=payload.files)
+        response = await self._request(
+            'POST',
+            '/ej/api/v1/master/submit-run-input',
+            data=payload.data,
+            files=payload.files,
+        )
         return self._parse_reply(response, SubmitRunInputReply)
 
     async def get_submit(self, request: GetSubmitRequest) -> GetSubmitReply:
         params = request.model_dump(mode='json', by_alias=True, exclude_none=True)
-        return self._parse_reply(await self._request('GET', request.action, params=params), GetSubmitReply)
+        response = await self._request('GET', '/ej/api/v1/master/get-submit', params=params)
+        return self._parse_reply(response, GetSubmitReply)
 
     async def get_user(self, request: GetUserRequest) -> GetUserReply:
         params = request.model_dump(mode='json', by_alias=True, exclude_none=True)
-        return self._parse_reply(await self._request('GET', request.action, params=params), GetUserReply)
+        response = await self._request('GET', '/ej/api/v1/master/get-user', params=params)
+        return self._parse_reply(response, GetUserReply)
 
     # -- Internal helpers -----------------------------------------------
+
+    @cached_property
+    def _operations(self) -> dict[str, dict[str, _EndpointSpec]]:
+        return _load_operations()
+
+    async def _call_operation(self, spec: _EndpointSpec, params: dict[str, Any]) -> Any:
+        query, form, files = self._partition_parameters(spec, params)
+        response = await self._request(spec.method, spec.path, params=query, data=form, files=files or None)
+        if spec.response_kind == 'json':
+            try:
+                return response.json()
+            except ValueError as exc:
+                msg = f'ejudge response for {spec.name!r} was not valid JSON.'
+                raise EjudgeClientError(msg) from exc
+        if spec.response_kind == 'text':
+            return response.text
+        return response.content
 
     async def _request(
         self,
         method: str,
-        action: str,
+        path: str,
         *,
         params: Mapping[str, Any] | None = None,
         data: Mapping[str, Any] | None = None,
         files: Mapping[str, tuple[str, bytes | str]] | None = None,
     ) -> httpx.Response:
-        request_params = {'json': '1', 'action': action}
-        if params:
-            request_params.update({key: _stringify(value) for key, value in params.items() if value is not None})
-
         headers = {'Authorization': self._authorization}
+
+        params_payload = {key: value for key, value in (params or {}).items() if value is not None}
+        data_payload = {key: value for key, value in (data or {}).items() if value is not None}
 
         try:
             response = await self._client.request(
                 method,
-                self._endpoint,
-                params=request_params,
-                data=data,
-                files=files if files else None,
+                path,
+                params=params_payload or None,
+                data=data_payload or None,
+                files=files or None,
                 headers=headers,
             )
             response.raise_for_status()
         except httpx.HTTPStatusError as exc:
-            msg = f'ejudge returned unexpected HTTP status {exc.response.status_code} for action {action!r}'
+            msg = f'ejudge returned unexpected HTTP status {exc.response.status_code} for path {path!r}'
             raise EjudgeClientError(msg) from exc
         except httpx.HTTPError as exc:  # Network / protocol problems
-            msg = f'Error communicating with ejudge while performing action {action!r}'
+            msg = f'Error communicating with ejudge while performing request to {path!r}'
             raise EjudgeClientError(msg) from exc
 
         return response
@@ -220,6 +332,60 @@ class EjudgeClient:
             raise EjudgeReplyError(parsed)
 
         return parsed
+
+    def _partition_parameters(
+        self, spec: _EndpointSpec, raw_params: Mapping[str, Any]
+    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, tuple[str, bytes | str]]]:
+        params = dict(raw_params)
+        query: dict[str, Any] = {}
+        form: dict[str, Any] = {}
+        files: dict[str, tuple[str, bytes | str]] = {}
+
+        for param in spec.params:
+            name = param['name']
+            required = param['required']
+            if name not in params:
+                if required:
+                    msg = f'Missing required parameter {name!r} for endpoint {spec.name!r}'
+                    raise TypeError(msg)
+                continue
+
+            value = params.pop(name)
+            if value is None:
+                continue
+
+            location = param['location']
+            if param['type'] == 'file':
+                files[name] = self._coerce_file_payload(name, value)
+                continue
+
+            serialized = self._coerce_scalar(value)
+            if location == 'query' or (location == 'formData' and spec.method == 'GET'):
+                query[name] = serialized
+            elif location == 'formData':
+                form[name] = serialized
+            else:  # pragma: no cover - unsupported parameter location
+                raise NotImplementedError(f'Unsupported parameter location {location!r} for {name!r}')
+
+        if params:
+            unexpected = ', '.join(sorted(params))
+            msg = f'Unexpected parameters for endpoint {spec.name!r}: {unexpected}'
+            raise TypeError(msg)
+
+        return query, form, files
+
+    @staticmethod
+    def _coerce_file_payload(name: str, value: Any) -> tuple[str, bytes | str]:
+        if isinstance(value, tuple) and len(value) >= 2:
+            filename, content = value[0], value[1]
+            return str(filename), content
+        return name, value
+
+    @staticmethod
+    def _coerce_scalar(value: Any) -> Any:
+        if isinstance(value, list | tuple):
+            return [_stringify(item) for item in value]
+        return _stringify(value)
 
 
 __all__ = ['EjudgeClient', 'EjudgeClientError', 'EjudgeReplyError']

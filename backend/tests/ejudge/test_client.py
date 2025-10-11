@@ -27,7 +27,7 @@ def test_submit_run_text_payload() -> None:
         reply = make_submit_run_reply(run_id=42)
         transport, calls = create_mock_transport(submit_run=reply)
 
-        async with EjudgeClient('https://ejudge.local/cgi-bin/master', 'token', transport=transport) as client:
+        async with EjudgeClient('https://ejudge.local', 'token', transport=transport) as client:
             request = SubmitRunRequest(
                 contest_id=7,
                 problem=5,
@@ -41,7 +41,7 @@ def test_submit_run_text_payload() -> None:
         assert len(calls) == 1
         call = calls[0]
         assert call.headers['Authorization'] == 'Bearer AQAAtoken'
-        assert call.url.params['json'] == '1'
+        assert call.url.path == '/ej/api/v1/master/submit-run'
         body = httpx.QueryParams(call.content.decode())
         assert body['contest_id'] == '7'
         assert body['lang_id'] == 'py3'
@@ -57,7 +57,7 @@ def test_submit_run_binary_payload() -> None:
         reply = make_submit_run_reply(run_id=101)
         transport, calls = create_mock_transport(submit_run=reply)
 
-        async with EjudgeClient('https://ejudge.local/cgi-bin/master', 'secrettoken', transport=transport) as client:
+        async with EjudgeClient('https://ejudge.local', 'secrettoken', transport=transport) as client:
             request = SubmitRunRequest(
                 contest_id=2,
                 problem=3,
@@ -78,7 +78,7 @@ def test_submit_run_input_text_payload() -> None:
         reply = make_submit_run_input_reply(submit_id=314)
         transport, calls = create_mock_transport(submit_run_input=reply)
 
-        async with EjudgeClient('https://ejudge.local/cgi-bin/master', 'abc', transport=transport) as client:
+        async with EjudgeClient('https://ejudge.local', 'abc', transport=transport) as client:
             request = SubmitRunInputRequest(
                 contest_id=9,
                 prob_id='A',
@@ -90,6 +90,7 @@ def test_submit_run_input_text_payload() -> None:
 
         assert result == reply
         call = calls[0]
+        assert call.url.path == '/ej/api/v1/master/submit-run-input'
         body = httpx.QueryParams(call.content.decode())
         assert body['contest_id'] == '9'
         assert body['prob_id'] == 'A'
@@ -106,12 +107,13 @@ def test_get_submit_roundtrip() -> None:
         reply = make_get_submit_reply(details)
         transport, calls = create_mock_transport(get_submit=reply)
 
-        async with EjudgeClient('https://ejudge.local/cgi-bin/master', 'zzz', transport=transport) as client:
+        async with EjudgeClient('https://ejudge.local', 'zzz', transport=transport) as client:
             request = GetSubmitRequest(contest_id=1, submit_id=555)
             result = await client.get_submit(request)
 
         assert result == reply
         call = calls[0]
+        assert call.url.path == '/ej/api/v1/master/get-submit'
         assert call.url.params['contest_id'] == '1'
         assert call.url.params['submit_id'] == '555'
 
@@ -123,12 +125,13 @@ def test_get_user_roundtrip() -> None:
         reply = make_get_user_reply()
         transport, calls = create_mock_transport(get_user=reply)
 
-        async with EjudgeClient('https://ejudge.local/cgi-bin/master', 'ttt', transport=transport) as client:
+        async with EjudgeClient('https://ejudge.local', 'ttt', transport=transport) as client:
             request = GetUserRequest(contest_id=4, other_user_login='john')
             result = await client.get_user(request)
 
         assert result == reply
         call = calls[0]
+        assert call.url.path == '/ej/api/v1/master/get-user'
         assert call.url.params['other_user_login'] == 'john'
         assert call.url.params['contest_id'] == '4'
 
@@ -140,7 +143,7 @@ def test_error_reply_raises() -> None:
         bad_reply = make_submit_run_reply(run_id=1).model_copy(update={'ok': False})
         transport, _ = create_mock_transport(submit_run=bad_reply)
 
-        async with EjudgeClient('https://ejudge.local/cgi-bin/master', 'token', transport=transport) as client:
+        async with EjudgeClient('https://ejudge.local', 'token', transport=transport) as client:
             request = SubmitRunRequest(contest_id=1, problem=1, lang_id='py', text_form='pass')
             with pytest.raises(EjudgeReplyError):
                 await client.submit_run(request)
@@ -155,9 +158,45 @@ def test_http_error_raises_client_error() -> None:
 
         transport = httpx.MockTransport(handler)
 
-        async with EjudgeClient('https://ejudge.local/cgi-bin/master', 'token', transport=transport) as client:
+        async with EjudgeClient('https://ejudge.local', 'token', transport=transport) as client:
             request = GetSubmitRequest(contest_id=1, submit_id=10)
             with pytest.raises(EjudgeClientError):
                 await client.get_submit(request)
+
+    asyncio.run(scenario())
+
+
+def test_master_namespace_exposes_all_operations() -> None:
+    async def scenario() -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            assert request.url.path == '/ej/api/v1/master/list-runs-json'
+            assert request.method == 'GET'
+            assert request.url.params['contest_id'] == '1'
+            assert request.url.params['first_run'] == '0'
+            body = {'ok': True, 'result': {'runs': []}}
+            return httpx.Response(200, json=body)
+
+        transport = httpx.MockTransport(handler)
+
+        async with EjudgeClient('https://ejudge.local', 'token', transport=transport) as client:
+            payload = await client.master.list_runs_json(contest_id=1, first_run=0)
+
+        assert payload == {'ok': True, 'result': {'runs': []}}
+
+    asyncio.run(scenario())
+
+
+def test_text_endpoint_returns_plain_string() -> None:
+    async def scenario() -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            assert request.url.path == '/ej/api/v1/master/raw-report'
+            return httpx.Response(200, text='<xml>ok</xml>')
+
+        transport = httpx.MockTransport(handler)
+
+        async with EjudgeClient('https://ejudge.local', 'token', transport=transport) as client:
+            payload = await client.master.raw_report(contest_id=1, run_id=2)
+
+        assert payload == '<xml>ok</xml>'
 
     asyncio.run(scenario())
