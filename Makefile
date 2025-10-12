@@ -66,6 +66,11 @@ run: ## 🏃 Run both dev servers (use two separate terminals)
 	@echo "Run 'make run-backend' in one terminal."
 	@echo "Run 'make run-frontend' in another terminal."
 
+.PHONY: repl
+repl: ## 🐚 Launch an interactive ejudge API REPL
+	@echo "--- Starting ejudge REPL ---"
+	PYTHONPATH=. $(PYTHON) -m backend.ejudge.repl
+
 .PHONY: run-backend
 run-backend: ## FastAPI: Run backend dev server with auto-reload
 	@echo "--- Starting backend server at http://localhost:8000 ---"

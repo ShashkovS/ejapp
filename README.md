@@ -58,6 +58,13 @@
   ```
   Serves the client at [http://localhost:5173](http://localhost:5173). The frontend reads `VITE_API_BASE` (defaults to `http://localhost:8000`) to call the backend.
 
+- **Ejudge REPL** (interactive helper around the ejudge HTTP API):
+  ```bash
+  EJUDGE_ORIGIN="https://<host>" EJUDGE_TOKEN="<token>" make repl
+  ```
+  Drops into a Python shell preloaded with `SyncEjudgeClient`, request models, and an eagerly connected `client` instance when the `EJUDGE_*` variables are set. Use this to explore ejudge endpoints without writing ad-hoc asyncio boilerplate.
+  - Need to mirror statements into a contest? Reach for `backend.ejudge.statements.render_statement_xml` (or `write_statement_xml`) to wrap HTML fragments inside a safe CDATA envelope so ejudge can parse them during config reloads without tripping over mismatched tags.
+
 > Use two terminals or panes—one for the backend and one for the frontend. `make run` prints a reminder of this workflow.
 
 ## Testing
