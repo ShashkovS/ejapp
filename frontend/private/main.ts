@@ -14,11 +14,19 @@ const API_BASE = (import.meta as any).env?.VITE_API_BASE || 'http://localhost:80
 const accessToken = localStorage.getItem('accessToken');
 const refreshToken = localStorage.getItem('refreshToken');
 
-const configInput = document.getElementById('contest-config') as HTMLInputElement;
-const configForm = document.getElementById('contest-config-form') as HTMLFormElement;
-const statusMessage = document.getElementById('status-message') as HTMLParagraphElement;
-const reportsSection = document.getElementById('reports-section') as HTMLElement;
-const logoutLink = document.getElementById('logout-link');
+let configInput: HTMLInputElement;
+let configForm: HTMLFormElement;
+let statusMessage: HTMLParagraphElement;
+let reportsSection: HTMLElement;
+let logoutLink: HTMLAnchorElement | null;
+
+function requireElement<T extends HTMLElement>(id: string): T {
+  const element = document.getElementById(id);
+  if (!element) {
+    throw new Error(`Element with id "${id}" was not found on the page.`);
+  }
+  return element as T;
+}
 
 if (!accessToken) {
   window.location.href = '/';
@@ -227,27 +235,47 @@ async function bootstrap() {
   }
 }
 
-configForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const ids = parseContestInput(configInput.value);
-  if (!ids.length) {
-    setStatus('Добавьте хотя бы один номер контеста перед сохранением.', 'error');
-    renderReports({ contests: [] });
+function setupDomReferences() {
+  configInput = requireElement<HTMLInputElement>('contest-config');
+  configForm = requireElement<HTMLFormElement>('contest-config-form');
+  statusMessage = requireElement<HTMLParagraphElement>('status-message');
+  reportsSection = requireElement<HTMLElement>('reports-section');
+  logoutLink = document.getElementById('logout-link') as HTMLAnchorElement | null;
+}
+
+function registerEventListeners() {
+  configForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const ids = parseContestInput(configInput.value);
+    if (!ids.length) {
+      setStatus('Добавьте хотя бы один номер контеста перед сохранением.', 'error');
+      renderReports({ contests: [] });
+      return;
+    }
+
+    try {
+      const saved = await saveContestConfig(ids);
+      configInput.value = formatContestInput(saved);
+      await refreshReports();
+    } catch (error) {
+      console.error(error);
+      setStatus(error instanceof Error ? error.message : 'Не удалось сохранить конфигурацию.', 'error');
+    }
+  });
+
+  logoutLink?.addEventListener('click', () => {
+    localStorage.clear();
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    setupDomReferences();
+  } catch (error) {
+    console.error(error);
     return;
   }
 
-  try {
-    const saved = await saveContestConfig(ids);
-    configInput.value = formatContestInput(saved);
-    await refreshReports();
-  } catch (error) {
-    console.error(error);
-    setStatus(error instanceof Error ? error.message : 'Не удалось сохранить конфигурацию.', 'error');
-  }
+  registerEventListeners();
+  void bootstrap();
 });
-
-logoutLink?.addEventListener('click', () => {
-  localStorage.clear();
-});
-
-bootstrap();
