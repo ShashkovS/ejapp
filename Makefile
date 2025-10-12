@@ -76,6 +76,11 @@ run-frontend: ## Vite: Run frontend dev server with auto-reload
 	@echo "--- Starting frontend server at http://localhost:5173 ---"
 	(cd $(FRONTEND_DIR) && npm run dev)
 
+.PHONY: repl
+repl: ## Open an interactive ejudge REPL with helpful shortcuts
+	@echo "--- Launching ejudge REPL (requires EJUDGE_ORIGIN and EJUDGE_TOKEN) ---"
+	PYTHONPATH=. $(PYTHON) -m backend.ejudge.repl
+
 # --- Code Quality ---
 .PHONY: format
 format: format-backend format-frontend ## 💅 Format all code (Python & Frontend)

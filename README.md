@@ -84,6 +84,22 @@
   ```
   Optional knobs `EJUDGE_CONTEST_ID` and `EJUDGE_RUN_FILTER` let you target a different contest or subset of runs without editing the suite.
 
+## Exploring the ejudge API interactively
+When you need to inspect ejudge endpoints manually, launch the synchronous REPL helper:
+
+```bash
+EJUDGE_ORIGIN="https://leaders.tech" EJUDGE_TOKEN="<token>" make repl
+```
+
+The session wires up a shared HTTP/2 client and exposes handy names:
+
+- `ej` — the full synchronous façade (typed helpers like `ej.submit_run(...)`).
+- `ej_client` — shortcuts for `/master` endpoints, e.g. `pp(ej_client.list_runs_json(contest_id=302, first_run=0, last_run=5))`.
+- `pp` — a `pprint` partial with a generous width for large JSON payloads.
+- `SubmitRunRequest`, `GetSubmitRequest`, etc. — Pydantic request models ready for use.
+
+Type `Ctrl+D` (EOF) to exit the REPL; resources are closed automatically.
+
 ## Database Migrations
 - Create a new migration:
   ```bash

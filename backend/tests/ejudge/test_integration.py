@@ -7,13 +7,14 @@ from typing import Any, TypedDict
 
 import pytest
 
+from backend.app.config import settings
 from backend.ejudge import EjudgeClient
 
 # -- Environment helpers -------------------------------------------------
 # Pull credentials for the real ejudge instance from the environment. The
 # integration suite is skipped entirely when they are not provided.
-EJUDGE_ORIGIN = os.getenv('EJUDGE_ORIGIN')
-EJUDGE_TOKEN = os.getenv('EJUDGE_TOKEN')
+EJUDGE_ORIGIN = settings.ejudge_origin
+EJUDGE_TOKEN = settings.ejudge_token
 
 # Allow customisation of the contest identifier and filtering behaviour
 # without touching the test code. Defaults mirror the shared sandbox.
