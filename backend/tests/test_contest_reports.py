@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncIterator
 from datetime import UTC, datetime
 from typing import Any
@@ -8,6 +9,8 @@ import pytest
 from test_app import _bearer, _register
 
 from backend.app.contest_reports import get_ejudge_client
+from backend.app.database import engine
+from backend.db import ContestReportConfig
 from backend.main import app
 
 
@@ -98,6 +101,21 @@ def ejudge_override() -> AsyncIterator[None]:
 def test_contest_config_defaults_to_empty(client) -> None:
     tokens = _register(client, 'report@example.com', 'pw')
     access = tokens['access_token']
+
+    response = client.get('/private/contest-config', headers=_bearer(access))
+    assert response.status_code == 200
+    assert response.json() == {'contest_ids': []}
+
+
+def test_contest_config_recovers_if_table_missing(client) -> None:
+    tokens = _register(client, 'missing-table@example.com', 'pw')
+    access = tokens['access_token']
+
+    async def _drop_table() -> None:
+        async with engine.begin() as conn:
+            await conn.run_sync(ContestReportConfig.__table__.drop, checkfirst=True)
+
+    asyncio.run(_drop_table())
 
     response = client.get('/private/contest-config', headers=_bearer(access))
     assert response.status_code == 200

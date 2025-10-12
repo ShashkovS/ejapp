@@ -7,9 +7,11 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.config import settings
+from backend.app.database import engine
 from backend.app.deps import SessionDep, TokenDep, get_current_user_id
 from backend.app.schemas import (
     ContestCell,
@@ -29,8 +31,24 @@ _HIGHLIGHT_PRIORITY = {'OK': 0, 'AC': 1, 'PR': 2, 'SM': 3}
 _HIGHLIGHT_STATUSES = set(_HIGHLIGHT_PRIORITY)
 
 
+async def _ensure_config_table() -> None:
+    async with engine.begin() as conn:
+        await conn.run_sync(ContestReportConfig.__table__.create, checkfirst=True)
+
+
+def _is_missing_table_error(exc: OperationalError) -> bool:
+    message = str(exc).lower()
+    return 'no such table' in message and 'contest_report_configs' in message
+
+
 async def _get_or_create_config(session: AsyncSession, user_id: int) -> ContestReportConfig:
-    result = await session.execute(select(ContestReportConfig).where(ContestReportConfig.user_id == user_id))
+    try:
+        result = await session.execute(select(ContestReportConfig).where(ContestReportConfig.user_id == user_id))
+    except OperationalError as exc:
+        if not _is_missing_table_error(exc):
+            raise
+        await _ensure_config_table()
+        result = await session.execute(select(ContestReportConfig).where(ContestReportConfig.user_id == user_id))
     config = result.scalars().first()
     if config is None:
         config = ContestReportConfig(user_id=user_id, contest_ids='')
