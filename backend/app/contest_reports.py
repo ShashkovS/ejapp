@@ -36,19 +36,12 @@ async def _ensure_config_table() -> None:
         await conn.run_sync(ContestReportConfig.__table__.create, checkfirst=True)
 
 
-def _is_missing_table_error(exc: OperationalError) -> bool:
-    message = str(exc).lower()
-    return 'no such table' in message and 'contest_report_configs' in message
-
-
 async def _get_or_create_config(session: AsyncSession, user_id: int) -> ContestReportConfig:
+    await _ensure_config_table()
     try:
         result = await session.execute(select(ContestReportConfig).where(ContestReportConfig.user_id == user_id))
-    except OperationalError as exc:
-        if not _is_missing_table_error(exc):
-            raise
-        await _ensure_config_table()
-        result = await session.execute(select(ContestReportConfig).where(ContestReportConfig.user_id == user_id))
+    except OperationalError as exc:  # pragma: no cover - propagated to the client
+        raise HTTPException(status_code=500, detail='Database error while reading contest config') from exc
     config = result.scalars().first()
     if config is None:
         config = ContestReportConfig(user_id=user_id, contest_ids='')
