@@ -25,6 +25,7 @@ from .models import (
     SubmitRunReply,
     SubmitRunRequest,
 )
+from .repl import EjudgeSyncClient, start_repl
 
 __all__ = [
     'EjudgeClient',
@@ -32,6 +33,7 @@ __all__ = [
     'EjudgeError',
     'EjudgeReply',
     'EjudgeReplyError',
+    'EjudgeSyncClient',
     'GetSubmitReply',
     'GetSubmitRequest',
     'GetUserReply',
@@ -50,4 +52,5 @@ __all__ = [
     'make_submit_details',
     'make_submit_run_input_reply',
     'make_submit_run_reply',
+    'start_repl',
 ]
