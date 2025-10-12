@@ -10,6 +10,7 @@ from jwt import PyJWTError
 
 from backend.app import auth
 from backend.app.config import settings
+from backend.app.contest_reports import router as contest_reports_router
 from backend.app.database import engine
 from backend.app.items import private_router, router as items_router
 from backend.db import Base
@@ -66,6 +67,7 @@ def create_app() -> FastAPI:
     application.include_router(auth.router)
     application.include_router(items_router)
     application.include_router(private_router)
+    application.include_router(contest_reports_router)
     return application
 
 
