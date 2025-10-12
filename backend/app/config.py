@@ -23,6 +23,8 @@ class Settings:
     allowed_origins: list[str] = field(init=False)
     e2e: bool = field(default_factory=lambda: os.getenv('E2E') == '1')
     private_path_prefixes: tuple[str, ...] = ('/private',)
+    ejudge_origin: str = field(default_factory=lambda: os.getenv('EJUDGE_ORIGIN', None))
+    ejudge_token: str = field(default_factory=lambda: os.getenv('EJUDGE_TOKEN', None))
 
     _backend_dir: Path = field(init=False, repr=False)
 

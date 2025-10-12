@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import asyncio
 import code
-import os
 from collections.abc import Mapping
 from functools import partial
 from pprint import pprint
@@ -12,6 +11,8 @@ from textwrap import dedent
 from typing import Any
 
 import httpx
+
+from backend.app.config import settings
 
 from .client import EjudgeClient
 from .models import (
@@ -24,6 +25,8 @@ from .models import (
     SubmitRunReply,
     SubmitRunRequest,
 )
+
+print(f'{settings.ejudge_origin=}')
 
 
 class _SyncNamespace:
@@ -144,8 +147,8 @@ def _make_banner(base_url: str) -> str:
 
 
 def start_repl(*, base_url: str | None = None, api_token: str | None = None) -> None:
-    base_url = base_url or os.environ.get('EJUDGE_ORIGIN')
-    api_token = api_token or os.environ.get('EJUDGE_TOKEN')
+    base_url = settings.ejudge_origin
+    api_token = settings.ejudge_token
 
     if not base_url or not api_token:
         msg = 'Set EJUDGE_ORIGIN and EJUDGE_TOKEN environment variables before launching the REPL.'
@@ -171,6 +174,5 @@ def main() -> int:
 
 if __name__ == '__main__':
     raise SystemExit(main())
-
 
 __all__ = ['EjudgeSyncClient', 'start_repl']
