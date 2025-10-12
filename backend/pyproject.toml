@@ -15,7 +15,7 @@ dependencies = [
     "PyJWT",
     "alembic",
     "pytest",
-    "httpx",
+    "httpx[http2]",
     "greenlet",
     "xmltodict",
 ]
