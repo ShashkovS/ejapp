@@ -25,6 +25,7 @@ from .models import (
     SubmitRunReply,
     SubmitRunRequest,
 )
+from .repl import SyncEjudgeClient, build_repl_namespace
 
 __all__ = [
     'EjudgeClient',
@@ -44,6 +45,8 @@ __all__ = [
     'SubmitRunInputRequest',
     'SubmitRunReply',
     'SubmitRunRequest',
+    'SyncEjudgeClient',
+    'build_repl_namespace',
     'create_mock_transport',
     'make_get_submit_reply',
     'make_get_user_reply',
