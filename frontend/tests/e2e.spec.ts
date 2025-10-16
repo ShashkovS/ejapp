@@ -17,17 +17,11 @@ test('User can register, login, and perform CRUD operations', async ({ page }) =
 
   await page.waitForURL('**/private/', { waitUntil: 'domcontentloaded' });
 
-  const items0 = await page.$$('#item-list li');
-  expect(items0.length).toBe(0);
+  await page.waitForResponse((res) => res.url().endsWith('/private/reports') && res.status() === 200);
 
-  const [createResponse] = await Promise.all([
-    page.waitForResponse((res) => res.url().endsWith('/items') && res.status() === 200),
-    page.fill('#item-title', 'First Item').then(() => page.click('#item-form button[type="submit"]')),
-  ]);
-  expect(createResponse.ok()).toBeTruthy();
+  await expect(page.locator('[data-testid="reports-filter"]')).toBeVisible();
+  await expect(page.locator('[data-testid="topic-table"]').first()).toContainText('DP1 Altair Akanov');
 
-  await expect(page.locator('#item-list li')).toHaveText(['First Item']);
-
-  await page.click('#logout-link');
+  await page.click('[data-testid="logout-button"]');
   await page.waitForURL('**/', { waitUntil: 'domcontentloaded' });
 });

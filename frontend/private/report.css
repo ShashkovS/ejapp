@@ -1,0 +1,144 @@
+.reports-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  color: #1a1a1a;
+}
+
+.reports-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.reports-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.filter select {
+  min-width: 180px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+}
+
+.logout {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout:hover {
+  background-color: #1d4ed8;
+}
+
+.status {
+  margin: 16px 0;
+  font-style: italic;
+  color: #4b5563;
+}
+
+.status.error {
+  color: #dc2626;
+}
+
+.reports-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.topic h2,
+.summary h2,
+.weekly h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.report-table,
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.report-table th,
+.report-table td,
+.summary-table th,
+.summary-table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.report-table th:first-child,
+.report-table td:first-child,
+.summary-table th:first-child,
+.summary-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #f8fafc;
+  text-align: left;
+  z-index: 1;
+}
+
+.report-table thead th {
+  background-color: #f1f5f9;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.report-table tbody tr:nth-child(even) td:not(:first-child) {
+  background-color: #f9fafb;
+}
+
+.report-table tfoot td:first-child {
+  background-color: #f8fafc;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .reports-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
