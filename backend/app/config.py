@@ -25,6 +25,7 @@ class Settings:
     private_path_prefixes: tuple[str, ...] = ('/private',)
     ejudge_origin: str = field(default_factory=lambda: os.getenv('EJUDGE_ORIGIN', None))
     ejudge_token: str = field(default_factory=lambda: os.getenv('EJUDGE_TOKEN', None))
+    ejudge_topics_path: str | None = field(default_factory=lambda: os.getenv('EJUDGE_TOPICS_PATH'))
 
     _backend_dir: Path = field(init=False, repr=False)
 

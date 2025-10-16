@@ -16,10 +16,13 @@
     "e2e:ui": "VITE_API_BASE=http://localhost:18100 npm run build && playwright test --ui"
   },
   "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
     "@playwright/test": "^1.55.0",
     "@tailwindcss/vite": "^4.1.13",
     "@types/node": "^24.5.2",
     "autoprefixer": "^10.4.21",
+    "@vitejs/plugin-react": "^4.3.4",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.13",
     "typescript": "~5.8.3",
@@ -27,6 +30,8 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "@tailwindcss/cli": "^4.1.13",
     "@tailwindcss/postcss": "^4.1.13"
   }

@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.auth import decode_token, oauth2_scheme
 from backend.app.database import get_session, get_user_by_email
+from backend.app.reporting import ReportBuildError, ReportsResponse, build_reports
 from backend.app.schemas import ItemCreate, ItemOut, ItemRead
 from backend.db import Item
 
@@ -68,6 +69,15 @@ async def create_item(
 @private_router.get('/ping')
 async def private_ping() -> dict[str, str]:
     return {'status': 'private-ok'}
+
+
+@private_router.get('/reports', response_model=ReportsResponse)
+async def private_reports(session: SessionDep, token: TokenDep) -> ReportsResponse:
+    await _get_user_from_token(token, session)
+    try:
+        return await build_reports()
+    except ReportBuildError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
 __all__ = ['private_router', 'router']

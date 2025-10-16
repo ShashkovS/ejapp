@@ -32,6 +32,7 @@ Both services are run independently during development. The frontend communicate
 - `GET /auth/google/callback` — mock OAuth exchange that returns tokens.
 - `GET /items` — returns the current user's items (requires access token).
 - `POST /items` — creates an item for the authenticated user.
+- `GET /private/reports` — aggregates ejudge contest data, returning problem matrices, topic summaries, and weekly activity for the configured contests. Requires authentication.
 
 All handlers use async sessions to interact with the database. Responses are simple dictionaries (Pydantic models are defined for request/response validation).
 
@@ -46,7 +47,7 @@ All handlers use async sessions to interact with the database. Responses are sim
 ### Structure
 - **Entry HTML:** `frontend/index.html` loads the public landing page; Vite injects bundles from `frontend/src/main.ts`.
 - **Public bundle (`frontend/src/main.ts`):** Implements registration, login, and simulated Google OAuth flows. On success, tokens are persisted to `localStorage` and the browser navigates to `/private/`.
-- **Private area (`frontend/private/`):** Contains its own HTML and `main.ts`, which loads Tailwind styles, fetches the current user's items, submits new items, and performs automatic refresh-token flow when access tokens expire. It redirects to `/` if no access token is present.
+- **Private area (`frontend/private/`):** A dedicated React bundle (`main.tsx` → `App.tsx`) renders the authenticated ejudge dashboard. It fetches aggregated contest reports, exposes cohort-based filtering, colour-coded topic summaries, and weekly activity heatmaps. Token refresh is handled automatically when the reports endpoint returns `401`, and the page redirects to `/` if no access token is present before hydration.
 - **Styling:** Tailwind CSS is configured through `tailwind.config.js` and processed via the `@tailwindcss/vite` plugin.
 
 ### Build & Tooling
@@ -69,7 +70,13 @@ All handlers use async sessions to interact with the database. Responses are sim
 ### Item Management
 1. `GET /items` fetches the list of items owned by the current user (`Item.owner_id`).
 2. `POST /items` adds a new item with the submitted title and associates it with the user.
-3. Responses are rendered in the private UI as a simple list.
+3. These endpoints remain available for backwards compatibility, although the current private UI focuses on the ejudge reports dashboard described below.
+
+### Ejudge Reports
+1. Once the React dashboard mounts it issues an authenticated `GET /private/reports` request.
+2. The backend validates the JWT, loads the configured ejudge topics, and either fetches real contest data in parallel or falls back to a deterministic sample dataset when `E2E=1`.
+3. The response contains per-topic problem matrices, aggregate topic totals, and week-by-week counts of accepted runs.
+4. The client renders individual topic tables, heatmap summaries, and a weekly activity grid, applying cohort filters locally without re-querying the server.
 
 ## Configuration & Environment
 - `.env` at the repository root defines secrets and connection settings; `backend/main.py` loads it via `load_dotenv('../.env')`.
